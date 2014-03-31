@@ -1,0 +1,26 @@
+{
+  "name": "nodemaker",
+  "version": "0.0.0",
+  "description": "Pattern maker",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hkloom/nodemaker.git"
+  },
+  "keywords": [
+    "pattern"
+  ],
+  "author": "tai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hkloom/nodemaker/issues"
+  },
+  "homepage": "https://github.com/hkloom/nodemaker",
+  "dependencies": {
+    "logfmt": "~1.1.2",
+    "express": "~3.5.1"
+  }
+}
