@@ -1,11 +1,8 @@
 var express = require("express");
 var logfmt = require("logfmt");
 var jquery = require("jquery");
-var qs = require('querystring');
 var app = express();
-
-
-
+var cal = require('./calformat.js');
 
 app.use(express.bodyParser());
 app.use(logfmt.requestLogger());
@@ -21,7 +18,7 @@ app.get('/calendar/new', function(req, res) {
 
 app.post('/calendar/view', function(req, res) {
 	console.log(req.body.system.entry);
-	res.send("Hello, "+req.body.system.entry);
+	res.send(cal.basichtml());
 });
 
 var port = Number(process.env.PORT || 5000);
