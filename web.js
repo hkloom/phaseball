@@ -1,17 +1,30 @@
-
 var express = require("express");
 var logfmt = require("logfmt");
+var jquery = require("jquery");
+var qs = require('querystring');
 var app = express();
 
+
+
+
+app.use(express.bodyParser());
 app.use(logfmt.requestLogger());
 
-app.get('/', function(req, res) {
-  res.send('<<<<<<<CALENDAR CREATOR>>>>>>>');
+app.get('/calendar/new', function(req, res) {
+	var calendar_form = 
+	"<form method='post' action='/calendar/view'>"+
+	"<textarea name='system[entry]' style='width:500px;height:250px;'>Enter your schedule here</textarea><br/>"+
+	"<input type='submit' value='Submit'>"+
+	"</form>";
+	res.send(calendar_form);
+});
+
+app.post('/calendar/view', function(req, res) {
+	console.log(req.body.system.entry);
+	res.send("Hello, "+req.body.system.entry);
 });
 
 var port = Number(process.env.PORT || 5000);
 app.listen(port, function() {
-  console.log("Listening on " + port);
+	console.log("Listening on " + port);
 });
-
-
