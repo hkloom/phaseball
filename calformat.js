@@ -1,4 +1,7 @@
+var $ = require("jquery");
+
 days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat'];
+days_abrev = ['U', 'M', 'T', 'W', 'R', 'F', 'S'];
 min_time = 6;
 max_time = 22;
 
@@ -42,24 +45,42 @@ var extract = function(entry){
 	return commitments;
 }
 
+function to24hour(time){
+	var hour, a = (/(\d+):(\d+)([ap]m)/i).exec(time);
+	hour = parseInt(a[1],10);
+	if (hour<12 && a[3]=="pm"){ hour +=	12; }
+	return hour+(groups[2]/60);
+}
+
+
 var show = function(commitments){
 	var html = "";
 	for (var i in commitments){
 		var c = commitments[i];
+		var name = c.eventname;
 		var days = ((c.days).replace(/ /,'')).split('');
-		console.log(days);
-	}
+		var times_unfrmt = (c.times).split('-');
+		var times = times_unfrmt.map(to24hour);
+		console.log(times);
+	
 	for (var j=min_time; j<=max_time; j++){ //number of rows
 		html+="<tr>";
 		for (var k=0;k<7;k++){ //number of columns
 			html+="	<td>";
 			//if the event exists at this time on this day, list it
-			html+="0"
+			var index = days.indexOf(days_abrev[k]);
+			if (index != -1){
+				//console.log(name+" occurs on "+index);
+				html+="1";
+			}else{
+				html+="0";
+			}
 			html+= "</td>";
 		}
 		html+="</tr>";
 	}
 	html+="</table>";
+	}
 	return html;
 }
 

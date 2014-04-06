@@ -1,11 +1,34 @@
 var express = require("express");
 var logfmt = require("logfmt");
-var jquery = require("jquery");
+var jade = require("jade");
+var stylus = require('stylus');
+var nib = require('nib');
+var path = require('path');
+var $ = require("jquery");
 var app = express();
 var cal = require('./calformat.js');
 
+function compile(str, path) {
+  return stylus(str)
+    .set('filename', path)
+    .use(nib())
+ }
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+app.use(stylus.middleware({
+  src: __dirname + "/public",
+  compress: true
+}));
+app.use(express.static(__dirname + '/public/static'));
+app.use(app.router);
+app.engine('html', require('ejs').renderFile);
 app.use(express.bodyParser());
 app.use(logfmt.requestLogger());
+ app.configure('development', function(){
+  app.use(express.errorHandler());
+ });
+
 
 app.get('/calendar/new', function(req, res) {
 	var calendar_form = 
@@ -19,7 +42,8 @@ app.get('/calendar/new', function(req, res) {
 app.post('/calendar/view', function(req, res) {
 	//console.log(req.body.system.entry);
 	var cs = cal.extract(req.body.system.entry);
-	res.send(cal.basichtml()+cal.show(cs));
+	res.render("schedule",{title: 'WACKY INFLATABLE WIGGLY TUBE MAN'});
+	//cal.draw_block()
 });
 
 var port = Number(process.env.PORT || 5000);

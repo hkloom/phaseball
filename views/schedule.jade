@@ -1,0 +1,19 @@
+extends layout
+
+append scripts
+  script.
+    $(function(){ alert 'hello jade'; })
+
+block content
+  p
+    | Content testing oasdg;hsgnasldkgjh bclasf
+    | more stuff
+  p
+    | new paragraph!!
+    | it's easy
+block sidebar
+  .widget
+  h1 Widget
+  p
+    | Some sidebar stuff
+    | It's pretty
