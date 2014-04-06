@@ -10,15 +10,67 @@ var basichtml = function(){
 		html += "<td class='calendar-header'>"+
 		days[i]+"</td>";
 	}
-	html+= "</tr></table>"
+	html+= "</tr>"
 	return html;
 }
 
-
-function commitment(eventname,days,times){
+var Commitment = function(eventname,days,times){
 	this.eventname = eventname;
 	this.days = days;
 	this.times = times;
+}
+
+var extract = function(entry){
+	entry = entry.replace(/\r/g,'');
+	var lines = entry.split("\n");
+	//console.log(lines);
+	var commitments = [];
+	for (var i in lines){
+		var mystring = "one,two,three";
+		var matches = lines[i].split(',');
+		if (matches.length != 3){
+			//console.log("Wrong format! Expected 3, got "+matches.length+" entries\n");
+		}else{
+			var eventname = matches[0];
+			var days = matches[1];
+			var times = matches[2];
+			var commitment = new Commitment(eventname,days,times);
+			//console.log(commitment);
+			commitments.push(commitment);
+		}
+	}
+	return commitments;
+}
+
+var show = function(commitments){
+	var html = "";
+	for (var i in commitments){
+		var c = commitments[i];
+		var days = ((c.days).replace(/ /,'')).split('');
+		console.log(days);
+	}
+	for (var j=min_time; j<=max_time; j++){ //number of rows
+		html+="<tr>";
+		for (var k=0;k<7;k++){ //number of columns
+			html+="	<td>";
+			//if the event exists at this time on this day, list it
+			html+="0"
+			html+= "</td>";
+		}
+		html+="</tr>";
+	}
+	html+="</table>";
+	return html;
+}
+
+function getMatches(string, regex, index) {
+    index || (index = 1); // default to the first capturing group
+    var matches = [];
+    var match;
+    while (match = regex.exec(string)) {
+        matches.push(match[index]);
+    }
+    return matches;
 }
 
 function schedule(commitments){
@@ -29,3 +81,5 @@ function schedule(commitments){
 }
 
 module.exports.basichtml = basichtml;
+module.exports.extract = extract;
+module.exports.show = show;

@@ -17,8 +17,9 @@ app.get('/calendar/new', function(req, res) {
 });
 
 app.post('/calendar/view', function(req, res) {
-	console.log(req.body.system.entry);
-	res.send(cal.basichtml());
+	//console.log(req.body.system.entry);
+	var cs = cal.extract(req.body.system.entry);
+	res.send(cal.basichtml()+cal.show(cs));
 });
 
 var port = Number(process.env.PORT || 5000);
