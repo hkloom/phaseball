@@ -8,7 +8,6 @@ var cal = require('./calformat.js');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', __dirname + '/views');
-//app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 app.use(express.bodyParser());
 app.use(logfmt.requestLogger());
@@ -27,9 +26,7 @@ app.get('/calendar/new', function(req, res) {
 });
 
 app.post('/calendar/view', function(req, res) {
-	//console.log(req.body.system.entry);
 	var commitments = cal.extract(req.body.system.entry);
-	//console.log(commitments);
 	res.render('schedule1.html', { title: 'YOUR SCHEDULE!', commitments: commitments});
 });
 

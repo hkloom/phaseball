@@ -1,121 +1,51 @@
 var $ = require("jquery");
 
-days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat'];
 days_abrev = ["U", "M", 'T', 'W', 'R', 'F', 'S'];
 min_time = 6;
 max_time = 22;
 
-var basichtml = function(){
-	var html = "<table class='schedule-table'>"+
-	"<tr><th colspan = '7'> YOUR SCHEDULE </th></tr>"+
-	"<tr class='schedule-header'>";
-	for (var i=0; i<7; i++){
-		html += "<td class='calendar-header'>"+
-		days[i]+"</td>";
-	}
-	html+= "</tr>"
-	return html;
-}
-
-var Commitment = function(eventname,days,times){
-	this.eventname = eventname;
-	this.days = days;
-	this.times = times;
-}
-
+//extracts a json object from the user's entry
 var extract = function(entry){
 	entry = entry.replace(/\r/g,'');
 	var lines = entry.split("\n");
-	//console.log(lines);
 	var commitments = [];
 	for (var i in lines){
 		var mystring = "one,two,three";
 		var matches = lines[i].split(',');
 		if (matches.length != 3){
-			//console.log("Wrong format! Expected 3, got "+matches.length+" entries\n");
+			//they entered the wrong format
 		}else{
+			//jsonify their input
 			var eventname = matches[0];
 			var days_sym = ((matches[1]).replace(/ /,'')).split('');
 			var days = days_sym.map(dayToNum);
-			//var index = days.indexOf(days_abrev[k]);
 			var times_12 = (matches[2]).split('-');
 			var times = times_12.map(to24hour);
-			var commitment = new Commitment(eventname,days,times);
-			//console.log(commitment);
+			var commitment = {
+								eventname: eventname,
+								days: days,
+								times: times
+							};
 			commitments.push(commitment);
 		}
 	}
 	return commitments;
 }
 
+//gives the day of the week (0-6) for the letter abreviation
 function dayToNum(day){
-	console.log("day = "+day);
 	return days_abrev.indexOf(day);
 }
 
+//converts a time (eg. 3:00PM) into 24 hour time, then scales
+//it to the screen (from the min time to the max time)
 function to24hour(time){
 	var hour, a = (/(\d+):(\d+)[ ]*([ap]m)/i).exec(time);
-	if (a == null){
-		console.log("NULL!");
-	}else{
+	if (a != null){
 	hour = parseInt(a[1],10);
 	if (hour<12 && (a[3]=="PM" || a[3]=="pm")){ hour +=	12; }
-	else{
-		console.log("it's hour "+ (+hour + +(a[2]/60)));
-	}
 	return ((+hour + +(a[2]/60) - min_time)/(max_time-min_time));
 	}
 }
 
-
-var show = function(commitments){
-	var html = "";
-	for (var i in commitments){
-		var c = commitments[i];
-		var name = c.eventname;
-		var days = ((c.days).replace(/ /,'')).split('');
-		var times_unfrmt = (c.times)
-		var times = times_unfrmt.map(to24hour);
-		console.log(times);
-	
-	for (var j=min_time; j<=max_time; j++){ //number of rows
-		html+="<tr>";
-		for (var k=0;k<7;k++){ //number of columns
-			html+="	<td>";
-			//if the event exists at this time on this day, list it
-			var index = days.indexOf(days_abrev[k]);
-			if (index != -1){
-				//console.log(name+" occurs on "+index);
-				html+="1";
-			}else{
-				html+="0";
-			}
-			html+= "</td>";
-		}
-		html+="</tr>";
-	}
-	html+="</table>";
-	}
-	return html;
-}
-
-function getMatches(string, regex, index) {
-    index || (index = 1); // default to the first capturing group
-    var matches = [];
-    var match;
-    while (match = regex.exec(string)) {
-        matches.push(match[index]);
-    }
-    return matches;
-}
-
-function schedule(commitments){
-	this.commitments = commitments;
-	this.draw = function(){
-		//var html = 
-	};
-}
-
-module.exports.basichtml = basichtml;
 module.exports.extract = extract;
-module.exports.show = show;
