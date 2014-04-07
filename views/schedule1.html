@@ -1,3 +1,17 @@
+<script>
+/*
+=================================================
+
+Schedule Prettyfier
+Tai Rodrig
+April 2014
+
+THIS PAGE DISPLAYS THE SCHEDULE
+
+=================================================
+*/
+</script>
+
 <html>
 <head><title><%= title %></title>
 	<style type="text/css">
@@ -6,7 +20,7 @@
 </head>
 <body>
 	<canvas id="schedule" width="750" height = "530"></canvas>
-	<script type="text/javascript">
+<script type="text/javascript">
 
 //---GLOBAL VARS---
 days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -86,16 +100,11 @@ for (var i=0; i< '<%- commitments.length %>'; i++){
 			ctx.lineWidth="2";
 			ctx.strokeStyle="black";
 			ctx.globalAlpha = 0.7;
+
 			//draw the rectangle
 			ctx.rect(c.days[j]*100+50,c.times[0]*480+50,100,(c.times[1]-c.times[0])*480);
 			ctx.fill();
 			ctx.stroke();
-
-			ctx.globalAlpha = 1;
-			ctx.lineWidth = "3";
-			ctx.fillStyle = "white";
-			ctx.strokeStyle = "black";
-			ctx.font="14px Georgia bold";
 
 			//add to list of labels
 			names.push({name: c.eventname, start: c.days[j]*100+55, end: c.times[0]*480+65});
@@ -103,6 +112,7 @@ for (var i=0; i< '<%- commitments.length %>'; i++){
 	}
 }
 
+//set up context to draw labels
 ctx.globalAlpha = 1;
 ctx.lineWidth = "3";
 ctx.fillStyle = "white";

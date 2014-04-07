@@ -1,3 +1,15 @@
+/*
+=================================================
+
+Schedule Prettyfier
+Tai Rodrig
+April 2014
+
+FUNCTIONS FOR FORMATTING USER INPUT
+
+=================================================
+*/
+
 var $ = require("jquery");
 
 days_abrev = ["U", "M", 'T', 'W', 'R', 'F', 'S'];

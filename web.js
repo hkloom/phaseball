@@ -1,3 +1,15 @@
+/*
+=================================================
+
+Schedule Prettyfier
+Tai Rodrig
+April 2014
+
+MAIN NODE ENTRY
+
+=================================================
+*/
+
 var express = require("express");
 var logfmt = require("logfmt");
 var path = require('path');
