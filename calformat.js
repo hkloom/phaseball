@@ -54,13 +54,17 @@ function dayToNum(day){
 }
 
 function to24hour(time){
-	var hour, a = (/(\d+):(\d+)([ap]m)/i).exec(time);
+	var hour, a = (/(\d+):(\d+)[ ]*([ap]m)/i).exec(time);
+	if (a == null){
+		console.log("NULL!");
+	}else{
 	hour = parseInt(a[1],10);
 	if (hour<12 && (a[3]=="PM" || a[3]=="pm")){ hour +=	12; }
 	else{
 		console.log("it's hour "+ (+hour + +(a[2]/60)));
 	}
 	return ((+hour + +(a[2]/60) - min_time)/(max_time-min_time));
+	}
 }
 
 

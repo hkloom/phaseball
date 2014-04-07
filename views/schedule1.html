@@ -6,8 +6,36 @@
 </style>
 </head>
 <body>
-<canvas id="schedule" width="700" height = "480"></canvas>
+<canvas id="schedule" width="750" height = "530"></canvas>
 <script type="text/javascript">
+days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+min_time = 6;
+max_time = 22;
+
+
+function rand(min, max) {
+    return parseInt(Math.random() * (max-min+1), 10) + min;
+}
+
+function get_random_color() {
+    var h = rand(0, 250);
+    var s = rand(80, 100); //get saturated colors
+    var l = rand(20, 30); //get dark colors
+    return 'hsl(' + h + ',' + s + '%,' + l + '%)';
+}
+
+function time_to_string(time){
+	var ntime = time+min_time;
+	var ext = "AM";
+	if (ntime >= 12){
+		ext = "PM";
+		if (ntime > 12){
+			ntime = ntime-12;
+		}
+	}
+	return ntime+ext;
+}
+
 //alert("b");
 //draw_block(0,4,6,"#00FFFF");
 //alert("a");
@@ -15,24 +43,53 @@ var json = <%- JSON.stringify(commitments) %>;
 //alert("number of commitments = "+json.length);
 canvas = document.getElementById('schedule');
 ctx = canvas.getContext('2d');
+ctx.beginPath();
+ctx.fillStyle = "#EEFFFF";
+ctx.strokeStyle = "#DDEEEE";
+ctx.rect(50,50,700,480);
+ctx.fill();
+
+for (var l=0; l<7; l++){
+	ctx.beginPath();
+	ctx.moveTo(l*100+50,0);
+	ctx.lineTo(l*100+50,530);
+	ctx.stroke();
+	ctx.fillStyle = "black"
+	ctx.font="16px Georgia";
+	ctx.fillText(days[l],l*100+80,30);
+}
+for (var k=0; k<16; k++){
+	ctx.beginPath();
+	ctx.moveTo(0,k*30+50);
+	ctx.lineTo(750,k*30+50);
+	ctx.stroke();
+	ctx.fillStyle = "black"
+	ctx.font="15px Georgia";
+	ctx.fillText(time_to_string(k),3,k*30+50);
+}
+
+
 for (var i=0; i< '<%- commitments.length %>'; i++){ 
 //alert(i);
 var c = json[i];//<%- commitments %>[i];
 //alert("commitment #"+i+" is "+c);
 //alert("c.days = "+c.days);
 //alert("c.times = "+c.times);
-var color = (Math.random()*0xFFFFFF<<0).toString(16); //random color
+var color = get_random_color(); //random color
 	 for (var j=0;j<c.days.length;j++){ 
-	 	ctx.beginPath();
-		ctx.fillStyle = color;
-		ctx.lineWidth="2";
-		ctx.strokeStyle="black";
-		ctx.rect(c.days[j]*100,c.times[0]*480,100,(c.times[1]-c.times[0])*480);
-		ctx.fill();
-		ctx.stroke();
-		ctx.fillStyle = "white"
-		ctx.font="18px Georgia";
-		ctx.fillText(c.eventname,c.days[j]*100+10,c.times[0]*480+30);
+	 	if (c.days[j] > -1){
+		 	ctx.beginPath();
+			ctx.fillStyle = color;
+			ctx.lineWidth="2";
+			ctx.strokeStyle="black";
+			//alert("day = "+c.days[j]);
+			ctx.rect(c.days[j]*100+50,c.times[0]*480+50,100,(c.times[1]-c.times[0])*480);
+			ctx.fill();
+			ctx.stroke();
+			ctx.fillStyle = "white"
+			ctx.font="13px Georgia";
+			ctx.fillText(c.eventname,c.days[j]*100+55,c.times[0]*480+62);
+		}
 	}
 }
 

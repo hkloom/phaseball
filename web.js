@@ -29,13 +29,8 @@ app.get('/calendar/new', function(req, res) {
 app.post('/calendar/view', function(req, res) {
 	//console.log(req.body.system.entry);
 	var commitments = cal.extract(req.body.system.entry);
-	console.log(commitments);
-	//console.log(cal.show(commitments));
-	 res.render('schedule1.html', { title: 'The index page!', 
-	 								commitments: commitments,
-	 								action: "foo"
-	 	 });
-	//cal.draw_block()
+	//console.log(commitments);
+	res.render('schedule1.html', { title: 'YOUR SCHEDULE!', commitments: commitments});
 });
 
 var port = Number(process.env.PORT || 5000);
