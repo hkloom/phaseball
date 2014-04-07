@@ -8,35 +8,31 @@
 <body>
 <canvas id="schedule" width="700" height = "480"></canvas>
 <script type="text/javascript">
-function draw_block(day,starttime,endtime,color){
-	var canvas = document.getElementById('schedule');
-	var ctx = canvas.getContext('2d');
-	ctx.fillStyle = color;
-	ctx.fillRect(day*100,starttime*30,100,endtime*30);
-}
-alert("b");
-draw_block(0,4,6,"#00FFFF");
-alert("a");
+//alert("b");
+//draw_block(0,4,6,"#00FFFF");
+//alert("a");
 var json = <%- JSON.stringify(commitments) %>;
-alert("number of commitments = "+json.length);
+//alert("number of commitments = "+json.length);
 canvas = document.getElementById('schedule');
 ctx = canvas.getContext('2d');
 for (var i=0; i< '<%- commitments.length %>'; i++){ 
-alert(i);
+//alert(i);
 var c = json[i];//<%- commitments %>[i];
-alert("commitment #"+i+" is "+c);
-alert("c.days = "+c.days);
-alert("c.times = "+c.times);
+//alert("commitment #"+i+" is "+c);
+//alert("c.days = "+c.days);
+//alert("c.times = "+c.times);
 var color = (Math.random()*0xFFFFFF<<0).toString(16); //random color
-	ctx.fillStyle = color; 
 	 for (var j=0;j<c.days.length;j++){ 
-	 	alert("ctx = "+ctx);
-		alert("1");
-		//var canvas = document.getElementById('schedule');
-		alert("2");
-		//var ctx = canvas.getContext('2d');
-		alert("3");
-		ctx.fillRect( c.days[j] *100,c.times[0]*30,100,c.times[1]*30);
+	 	ctx.beginPath();
+		ctx.fillStyle = color;
+		ctx.lineWidth="2";
+		ctx.strokeStyle="black";
+		ctx.rect(c.days[j]*100,c.times[0]*480,100,(c.times[1]-c.times[0])*480);
+		ctx.fill();
+		ctx.stroke();
+		ctx.fillStyle = "white"
+		ctx.font="18px Georgia";
+		ctx.fillText(c.eventname,c.days[j]*100+10,c.times[0]*480+30);
 	}
 }
 

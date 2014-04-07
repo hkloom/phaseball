@@ -58,9 +58,9 @@ function to24hour(time){
 	hour = parseInt(a[1],10);
 	if (hour<12 && (a[3]=="PM" || a[3]=="pm")){ hour +=	12; }
 	else{
-		console.log("it's "+hour+" "+a[3]);
+		console.log("it's hour "+ (+hour + +(a[2]/60)));
 	}
-	return ((hour+(a[2]/60))-min_time)/(24)*(max_time-min_time);
+	return ((+hour + +(a[2]/60) - min_time)/(max_time-min_time));
 }
 
 
