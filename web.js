@@ -5,11 +5,11 @@ var $ = require("jquery");
 var app = express();
 var cal = require('./calformat.js');
 
-app.use(express.static("/css",__dirname + '/css'));
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-//app.engine('html', require('ejs').renderFile);
+//app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
 app.use(express.bodyParser());
 app.use(logfmt.requestLogger());
  app.configure('development', function(){
@@ -31,7 +31,10 @@ app.post('/calendar/view', function(req, res) {
 	var commitments = cal.extract(req.body.system.entry);
 	console.log(commitments);
 	//console.log(cal.show(commitments));
-	 res.render('schedule.ejs', { title: 'The index page!', commitments: commitments });
+	 res.render('schedule1.html', { title: 'The index page!', 
+	 								commitments: commitments,
+	 								action: "foo"
+	 	 });
 	//cal.draw_block()
 });
 

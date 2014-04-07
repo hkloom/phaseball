@@ -60,7 +60,7 @@ function to24hour(time){
 	else{
 		console.log("it's "+hour+" "+a[3]);
 	}
-	return (hour+(a[2]/60)-min_time)/(max_time-min_time);
+	return ((hour+(a[2]/60))-min_time)/(24)*(max_time-min_time);
 }
 
 

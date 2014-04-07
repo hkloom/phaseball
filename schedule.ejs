@@ -13,18 +13,21 @@
 <canvas id="schedule" width="700" height = "480"></canvas>
 <%
 console.log("TEST-EJS");
-var draw_block = function (day,start,end,color){
+var draw_block = function (day,starttime,endtime,color){
+	draw_block
 	var canvas = document.getElementById('schedule');
 	var ctx = canvas.getContext('2d');
 	ctx.fillStyle = color;
-	ctx.fillRect(day*100,start*30,100,end*30);
+	ctx.fillRect(day*100,starttime*30,100,endtime*30);
 }
 for (var i=0; i<commitments.length; i++){
 	var c = commitments[i];
 	console.log("#"+i);
 	console.log(c);
+	console.log("days = "+days);
 	var color = (Math.random()*0xFFFFFF<<0).toString(16); //random color
-	for (var j=0;j<c.days;j++){
+	for (var j=0;j<days.length;j++){
+		console.log("drawing block on day "+c.days[j]);
 		draw_block(c.days[j],c.starttime,c._endtime,color);
 	}
 }
