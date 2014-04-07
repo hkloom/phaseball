@@ -1,7 +1,7 @@
 var $ = require("jquery");
 
 days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat'];
-days_abrev = ['U', 'M', 'T', 'W', 'R', 'F', 'S'];
+days_abrev = ["U", "M", 'T', 'W', 'R', 'F', 'S'];
 min_time = 6;
 max_time = 22;
 
@@ -35,8 +35,11 @@ var extract = function(entry){
 			//console.log("Wrong format! Expected 3, got "+matches.length+" entries\n");
 		}else{
 			var eventname = matches[0];
-			var days = matches[1];
-			var times = matches[2];
+			var days_sym = ((matches[1]).replace(/ /,'')).split('');
+			var days = days_sym.map(dayToNum);
+			//var index = days.indexOf(days_abrev[k]);
+			var times_12 = (matches[2]).split('-');
+			var times = times_12.map(to24hour);
 			var commitment = new Commitment(eventname,days,times);
 			//console.log(commitment);
 			commitments.push(commitment);
@@ -45,11 +48,19 @@ var extract = function(entry){
 	return commitments;
 }
 
+function dayToNum(day){
+	console.log("day = "+day);
+	return days_abrev.indexOf(day);
+}
+
 function to24hour(time){
 	var hour, a = (/(\d+):(\d+)([ap]m)/i).exec(time);
 	hour = parseInt(a[1],10);
-	if (hour<12 && a[3]=="pm"){ hour +=	12; }
-	return hour+(groups[2]/60);
+	if (hour<12 && (a[3]=="PM" || a[3]=="pm")){ hour +=	12; }
+	else{
+		console.log("it's "+hour+" "+a[3]);
+	}
+	return (hour+(a[2]/60)-min_time)/(max_time-min_time);
 }
 
 
@@ -59,7 +70,7 @@ var show = function(commitments){
 		var c = commitments[i];
 		var name = c.eventname;
 		var days = ((c.days).replace(/ /,'')).split('');
-		var times_unfrmt = (c.times).split('-');
+		var times_unfrmt = (c.times)
 		var times = times_unfrmt.map(to24hour);
 		console.log(times);
 	

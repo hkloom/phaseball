@@ -1,28 +1,15 @@
 var express = require("express");
 var logfmt = require("logfmt");
-var jade = require("jade");
-var stylus = require('stylus');
-var nib = require('nib');
 var path = require('path');
 var $ = require("jquery");
 var app = express();
 var cal = require('./calformat.js');
 
-function compile(str, path) {
-  return stylus(str)
-    .set('filename', path)
-    .use(nib())
- }
+app.use(express.static("/css",__dirname + '/css'));
 
 app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(stylus.middleware({
-  src: __dirname + "/public",
-  compress: true
-}));
-app.use(express.static(__dirname + '/public/static'));
-app.use(app.router);
-app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'ejs');
+//app.engine('html', require('ejs').renderFile);
 app.use(express.bodyParser());
 app.use(logfmt.requestLogger());
  app.configure('development', function(){
@@ -41,8 +28,10 @@ app.get('/calendar/new', function(req, res) {
 
 app.post('/calendar/view', function(req, res) {
 	//console.log(req.body.system.entry);
-	var cs = cal.extract(req.body.system.entry);
-	res.render("schedule",{title: 'WACKY INFLATABLE WIGGLY TUBE MAN'});
+	var commitments = cal.extract(req.body.system.entry);
+	console.log(commitments);
+	//console.log(cal.show(commitments));
+	 res.render('schedule.ejs', { title: 'The index page!', commitments: commitments });
 	//cal.draw_block()
 });
 

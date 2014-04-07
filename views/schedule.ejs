@@ -1,0 +1,34 @@
+<html>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<head><title><%= title %></title>
+<%
+	width = 700;
+	height = 500;
+%>
+<style type="text/css">
+     canvas { border: 1px solid black; }
+</style>
+</head>
+<body>
+<canvas id="schedule" width="700" height = "480"></canvas>
+<%
+console.log("TEST-EJS");
+var draw_block = function (day,start,end,color){
+	var canvas = document.getElementById('schedule');
+	var ctx = canvas.getContext('2d');
+	ctx.fillStyle = color;
+	ctx.fillRect(day*100,start*30,100,end*30);
+}
+for (var i=0; i<commitments.length; i++){
+	var c = commitments[i];
+	console.log("#"+i);
+	console.log(c);
+	var color = (Math.random()*0xFFFFFF<<0).toString(16); //random color
+	for (var j=0;j<c.days;j++){
+		draw_block(c.days[j],c.starttime,c._endtime,color);
+	}
+}
+%>
+
+</body>
+</html>
