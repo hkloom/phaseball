@@ -80,16 +80,16 @@ for (var i=0; i< '<%- commitments.length %>'; i++){
 			ctx.fillStyle = color;
 			ctx.lineWidth="2";
 			ctx.strokeStyle="black";
-
+			ctx.globalAlpha = 0.7;
 			//draw the rectangle
 			ctx.rect(c.days[j]*100+50,c.times[0]*480+50,100,(c.times[1]-c.times[0])*480);
 			ctx.fill();
 			ctx.stroke();
-			ctx.fillStyle = "white"
+			ctx.fillStyle = "black"
 			ctx.font="13px Georgia";
 
 			//fill in the name
-			ctx.fillText(c.eventname,c.days[j]*100+55,c.times[0]*480+62);
+			ctx.fillText(c.eventname,c.days[j]*100+55,c.times[1]*480+40);
 		}
 	}
 }
