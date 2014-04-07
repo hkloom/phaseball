@@ -69,6 +69,7 @@ for (var k=0; k<16; k++){
 
 //get the data
 var json = <%- JSON.stringify(commitments) %>;
+var names = [];
 
 //iterate over the different events
 for (var i=0; i< '<%- commitments.length %>'; i++){ 
@@ -85,13 +86,31 @@ for (var i=0; i< '<%- commitments.length %>'; i++){
 			ctx.rect(c.days[j]*100+50,c.times[0]*480+50,100,(c.times[1]-c.times[0])*480);
 			ctx.fill();
 			ctx.stroke();
-			ctx.fillStyle = "black"
-			ctx.font="13px Georgia";
 
-			//fill in the name
-			ctx.fillText(c.eventname,c.days[j]*100+55,c.times[1]*480+40);
+			ctx.globalAlpha = 1;
+			ctx.lineWidth = "3";
+			ctx.fillStyle = "white";
+			ctx.strokeStyle = "black";
+			ctx.font="14px Georgia bold";
+
+			//add to list of labels
+			names.push({name: c.eventname, start: c.days[j]*100+55, end: c.times[0]*480+65});
 		}
 	}
+}
+
+ctx.globalAlpha = 1;
+ctx.lineWidth = "3";
+ctx.fillStyle = "white";
+ctx.strokeStyle = "black";
+ctx.font="14px Georgia bold";
+
+//draw labels on top, so if there are conflicts the labels are still visible
+for (var t=0; t<names.length;t++){
+	var label = names[t];
+	//alert(label.name);
+	ctx.strokeText(label.name,label.start,label.end);
+	ctx.fillText(label.name,label.start,label.end);
 }
 
 </script>
