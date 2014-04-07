@@ -17,12 +17,7 @@ app.use(logfmt.requestLogger());
 
 
 app.get('/calendar/new', function(req, res) {
-	var calendar_form = 
-	"<form method='post' action='/calendar/view'>"+
-	"<textarea name='system[entry]' style='width:500px;height:250px;'>Enter your schedule here</textarea><br/>"+
-	"<input type='submit' value='Submit'>"+
-	"</form>";
-	res.send(calendar_form);
+	res.render('calendar_form.html');
 });
 
 app.post('/calendar/view', function(req, res) {

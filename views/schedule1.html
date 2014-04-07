@@ -57,8 +57,12 @@ for (var l=0; l<7; l++){
 //draw horizontal lines and time labels
 for (var k=0; k<16; k++){
 	ctx.beginPath();
+	ctx.strokeStyle = "#999999";
 	ctx.moveTo(0,k*30+50);
 	ctx.lineTo(750,k*30+50);
+	ctx.stroke();
+	ctx.beginPath();
+	ctx.strokeStyle = "#DDEEEE";
 	ctx.moveTo(0,(k+0.5)*30+50);
 	ctx.lineTo(750,(k+0.5)*30+50);
 	ctx.stroke();
