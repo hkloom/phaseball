@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript">
 /*
 =================================================
 
@@ -11,9 +11,14 @@ THIS PAGE DISPLAYS THE FORM
 =================================================
 */
 </script>
-
+</br>
+<div align='center' class = "content">
+<h1>
+	SCHEDULE PRETTIFIER
+</h1>
+</br>
 <form method='post' action='/calendar/view'>
-<textarea name='system[entry]' style='width:500px;height:250px;'>
+<textarea name='system[entry]'>
 Enter a schedule in the following format:
 
 Event Name 1, MWF, 10:00AM - 3:45PM
@@ -23,5 +28,45 @@ Event Name 3, S, 6:00PM - 8:00PM
 Click submit to draw the calendar!
 </textarea>
 <br/>
-<input type='submit' value='Submit'>
+<input type='submit' value='Prettify My Schedule'>
 </form>
+</div>
+
+<footer class="footer">
+	Tai Rodrig --- CCS CS130E --- April 2014
+</footer>
+
+<style type="text/css">
+/* make footer stick to bottom of page */
+* {
+  margin: 0;
+  font-family: Georgia;
+}
+html, body {
+  height: 100%;
+}
+textarea{
+	width: 500px;
+	height: 250px;
+	font-size: 14;
+}
+.content {
+  min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -50px; 
+}
+.content:after {
+  content: "";
+  display: block;
+}
+.footer, .content:after {
+  /* .push must be the same height as footer */
+  height: 50px; 
+}
+.footer {
+  text-align: center;
+  background: #3A60A6;
+  color: #FFFFFF;
+  font-size: 15;
+}
+</style>

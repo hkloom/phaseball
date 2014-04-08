@@ -20,9 +20,9 @@
   },
   "homepage": "https://github.com/hkloom/nodemaker",
   "dependencies": {
-    "logfmt": "~1.1.2",
     "express": "~3.5.1",
     "ejs": "*",
+    "logfmt": "~1.1.2",
     "jquery": "*"
   }
 }
