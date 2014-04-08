@@ -7,4 +7,4 @@ generates a pretty schedule given a string with format:
 `EventName2 , TRS , 1:00PM - 5:00PM` <br/>
 `...`
 
-live at: http://guarded-falls-1992.herokuapp.com/calendar/new
+live at: http://guarded-falls-1992.herokuapp.com/schedule/new
