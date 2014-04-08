@@ -55,7 +55,7 @@ canvas = document.getElementById('schedule');
 ctx = canvas.getContext('2d');
 ctx.beginPath();
 ctx.fillStyle = "#EEFFFF";
-ctx.strokeStyle = "#DDEEEE";
+ctx.strokeStyle = "#999999";
 ctx.rect(50,50,700,480);
 ctx.fill();
 
@@ -77,7 +77,7 @@ for (var k=0; k<16; k++){
 	ctx.lineTo(750,k*30+50);
 	ctx.stroke();
 	ctx.beginPath();
-	ctx.strokeStyle = "#DDEEEE";
+	ctx.strokeStyle = "#CCCCCC";
 	ctx.moveTo(0,(k+0.5)*30+50);
 	ctx.lineTo(750,(k+0.5)*30+50);
 	ctx.stroke();

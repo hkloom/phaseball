@@ -28,13 +28,13 @@ app.use(logfmt.requestLogger());
  });
 
 
-app.get('/calendar/new', function(req, res) {
+app.get('/schedule/new', function(req, res) {
 	res.render('calendar_form.html');
 });
 
-app.post('/calendar/view', function(req, res) {
+app.post('/schedule/view', function(req, res) {
 	var commitments = cal.extract(req.body.system.entry);
-	res.render('schedule1.html', { title: 'YOUR SCHEDULE!', commitments: commitments});
+	res.render('schedule1.html', { title: 'Schedule Prettified', commitments: commitments});
 });
 
 var port = Number(process.env.PORT || 5000);
