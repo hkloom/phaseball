@@ -15,7 +15,7 @@ var logfmt = require("logfmt");
 var path = require('path');
 var $ = require("jquery");
 var app = express();
-var fmt = require('./format.js');
+var fmt = require('./public/js/format.js');
 
 
 app.use(express.static(__dirname + '/public'));
