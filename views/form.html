@@ -12,6 +12,7 @@ THIS PAGE DISPLAYS THE FORM
 */
 </script>
 <title>Schedule Prettifier</title>
+<link href="/css/schedule.css" rel="stylesheet" type="text/css">
 <div align='center' class = "content">
 </br>
 <h1>
@@ -40,39 +41,3 @@ Click the button to draw the calendar!
 <footer class="footer">
 	Tai Rodrig --- CCS CS130E --- April 2014
 </footer>
-
-<style type="text/css">
-/* make footer stick to bottom of page */
-* {
-  margin: 0;
-  font-family: Georgia;
-}
-html, body {
-  height: 100%;
-  background: #CCD49D
-}
-textarea{
-	width: 500px;
-	height: 250px;
-	font-size: 14;
-}
-.content {
-  min-height: 100%;
-  /* equal to footer height */
-  margin-bottom: -50px; 
-}
-.content:after {
-  content: "";
-  display: block;
-}
-.footer, .content:after {
-  /* .push must be the same height as footer */
-  height: 50px; 
-}
-.footer {
-  text-align: center;
-  background: #3A60A6;
-  color: #FFFFFF;
-  font-size: 15;
-}
-</style>

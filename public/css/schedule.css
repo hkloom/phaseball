@@ -12,6 +12,11 @@
 	  /* equal to footer height */
 	  margin-bottom: -50px; 
 	}
+	textarea{
+		width: 500px;
+		height: 250px;
+		font-size: 14;
+	}
 	.content:after {
 	  content: "";
 	  display: block;

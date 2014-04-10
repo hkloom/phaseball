@@ -18,7 +18,7 @@ var app = express();
 var fmt = require('./format.js');
 
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
 app.use(express.bodyParser());
