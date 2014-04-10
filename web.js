@@ -15,7 +15,7 @@ var logfmt = require("logfmt");
 var path = require('path');
 var $ = require("jquery");
 var app = express();
-var cal = require('./calformat.js');
+var fmt = require('./format.js');
 
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -29,12 +29,12 @@ app.use(logfmt.requestLogger());
 
 
 app.get('/schedule/new', function(req, res) {
-	res.render('calendar_form.html');
+	res.render('form.html');
 });
 
 app.post('/schedule/view', function(req, res) {
-	var commitments = cal.extract(req.body.system.entry);
-	res.render('schedule1.html', { title: 'Schedule Prettified', commitments: commitments});
+	var commitments = fmt.extract(req.body.system.entry);
+	res.render('schedule.html', { title: 'Schedule Prettified', commitments: commitments});
 });
 
 var port = Number(process.env.PORT || 5000);

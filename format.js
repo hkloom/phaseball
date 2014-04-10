@@ -10,8 +10,6 @@ FUNCTIONS FOR FORMATTING USER INPUT
 =================================================
 */
 
-var $ = require("jquery");
-
 days_abrev = ["U", "M", 'T', 'W', 'R', 'F', 'S'];
 min_time = 6;
 max_time = 22;
@@ -27,7 +25,7 @@ var extract = function(entry){
 		if (matches.length != 3){
 			//they entered the wrong format
 		}else{
-			//jsonify their input
+			//objectify their input
 			var eventname = matches[0];
 			var days_sym = ((matches[1]).replace(/ /,'')).split('');
 			var days = days_sym.map(dayToNum);

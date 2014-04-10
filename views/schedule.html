@@ -14,13 +14,14 @@ THIS PAGE DISPLAYS THE SCHEDULE
 
 <html>
 <head><title><%= title %></title>
-	<style type="text/css">
-	canvas { border: 1px solid black; }
-	</style>
 </head>
 <body>
-<div align='center'>
+<div align='center' class = "content">
 	<canvas id="schedule" width="750" height = "530"></canvas>
+</div>
+<footer class="footer">
+	Tai Rodrig --- CCS CS130E --- April 2014
+</footer>
 <script type="text/javascript">
 
 //---GLOBAL VARS---
@@ -53,6 +54,10 @@ function time_to_string(time){
 //---DRAW SCHEDULE BACKGROUND---
 canvas = document.getElementById('schedule');
 ctx = canvas.getContext('2d');
+ctx.beginPath();
+ctx.fillStyle = "#FFFFFF";
+ctx.rect(0,0,750,530);
+ctx.fill();
 ctx.beginPath();
 ctx.fillStyle = "#EEFFFF";
 ctx.strokeStyle = "#999999";
@@ -108,7 +113,7 @@ for (var i=0; i< '<%- commitments.length %>'; i++){
 			ctx.stroke();
 
 			//add to list of labels
-			names.push({name: c.eventname, start: c.days[j]*100+55, end: c.times[0]*480+65});
+			names.push({name: c.eventname, x: c.days[j]*100+55, y: (c.times[0])*480+65});
 		}
 	}
 }
@@ -118,17 +123,48 @@ ctx.globalAlpha = 1;
 ctx.lineWidth = "3";
 ctx.fillStyle = "white";
 ctx.strokeStyle = "black";
-ctx.font="14px Georgia bold";
+ctx.font="14px Georgia";
 
 //draw labels on top, so if there are conflicts the labels are still visible
 for (var t=0; t<names.length;t++){
 	var label = names[t];
 	//alert(label.name);
-	ctx.strokeText(label.name,label.start,label.end);
-	ctx.fillText(label.name,label.start,label.end);
+	ctx.strokeText(label.name,label.x,label.y);
+	ctx.font="14px Georgia";
+	ctx.fillText(label.name,label.x,label.y);
 }
 
 </script>
-</div>
 </body>
+<style type="text/css">
+		/* make footer stick to bottom of page */
+	* {
+	  margin: 0;
+	  font-family: Georgia;
+	}
+	html, body {
+	  height: 100%;
+	  background: #CCD49D
+	}
+	.content {
+	  min-height: 100%;
+	  /* equal to footer height */
+	  margin-bottom: -50px; 
+	}
+	.content:after {
+	  content: "";
+	  display: block;
+	}
+	.footer, .content:after {
+	  /* .push must be the same height as footer */
+	  height: 50px; 
+	}
+	.footer {
+	  text-align: center;
+	  background: #3A60A6;
+	  color: #FFFFFF;
+	  font-size: 15;
+	}
+	canvas { border: 1px solid black; }
+	</style>
 </html>
