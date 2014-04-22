@@ -1,3 +1,15 @@
+/*
+=================================================
+
+Schedule Prettifier
+Tai Rodrig
+April 2014
+
+DRAWING FUNCTIONS FOR DISPLAYING THE CHALLENGE
+
+=================================================
+*/
+
 
 //---GLOBAL VARS---
 days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
