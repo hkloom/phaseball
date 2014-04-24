@@ -56,46 +56,13 @@ function drawBackground(id){
 	}
 }
 
-function drawSchedule(json){
-	//---DRAW BOARD ---
-	var names = [];
-
-	//iterate over the different events
-	for (var i=0; i< json.length; i++){ 
-		var c = json[i];
-		var color = get_random_color(); //new color per set of events
-		for (var j=0;j<c.days.length;j++){ 
-			if (c.days[j] > -1){ //for every valid day
-				ctx.beginPath();
-				ctx.fillStyle = color;
-				ctx.lineWidth="2";
-				ctx.strokeStyle="black";
-				ctx.globalAlpha = 0.7;
-
-				//draw the rectangle
-				ctx.rect(c.days[j]*100+50,c.times[0]*480+50,100,(c.times[1]-c.times[0])*480);
-				ctx.fill();
-				ctx.stroke();
-
-				//add to list of labels
-				names.push({name: c.eventname, x: c.days[j]*100+55, y: (c.times[0])*480+65});
-			}
-		}
-	}
-
-	//set up context to draw labels
-	ctx.globalAlpha = 1;
-	ctx.lineWidth = "3";
-	ctx.fillStyle = "white";
-	ctx.strokeStyle = "black";
-	ctx.font="14px Georgia";
-
-	//draw labels on top, so if there are conflicts the labels are still visible
-	for (var t=0; t<names.length;t++){
-		var label = names[t];
-		//alert(label.name);
-		ctx.strokeText(label.name,label.x,label.y);
-		ctx.font="14px Georgia";
-		ctx.fillText(label.name,label.x,label.y);
-	}
+function drawBall(ball){
+	ctx.fillStyle = "#FF0000";
+	ctx.strokeStyle = '#000000';
+	ctx.beginPath();
+   	ctx.arc((ball.x-board.x)/board.width*frame.width, 
+   		frame.height-(ball.y-board.y)/board.height*frame.height,
+   		10, 0, 2 * Math.PI, false);
+    ctx.fill();
+    ctx.stroke();
 }

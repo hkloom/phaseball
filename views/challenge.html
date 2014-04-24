@@ -30,7 +30,8 @@ THIS PAGE DISPLAYS THE CHALLENGE
 //get the data
 var json = <%- JSON.stringify(test) %>;
 drawBackground('canvas');
-alert(JSON.stringify(json, null, 4));
+//alert(JSON.stringify(json.ball, null, 4));
+drawBall(json.ball);
 
 </script>
 </body>
