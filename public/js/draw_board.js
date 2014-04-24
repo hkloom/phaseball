@@ -71,14 +71,14 @@ function drawBall(id,ball,board){
 	ctx.beginPath();
    	ctx.arc((ball.x-board.x)/board.width*frame.width, 
    		frame.height-(ball.y-board.y)/board.height*frame.height,
-   		10, 0, 2 * Math.PI, false);
+   		5, 0, 2 * Math.PI, false);
     ctx.fill();
 }
 
-function drawGoal(id,goal,board){
+function drawRect(id,goal,board, color){
 	canvas = document.getElementById(id);
 	ctx = canvas.getContext('2d');
-	ctx.fillStyle = "#00FF00";
+	ctx.fillStyle = color;
 	ctx.strokeStyle = '#000000';
 	ctx.beginPath();
    	ctx.rect((goal.x-board.x)/board.width*frame.width, 
@@ -90,18 +90,36 @@ function drawGoal(id,goal,board){
     ctx.stroke();
 }
 
+function drawObstacles(id,obstacles,board,color){
+	for (var i=0; i<obstacles.length;i++){
+		//alert(JSON.stringify(obstacles[i], null, 4));
+		drawRect(id,obstacles[i],board,color);
+	}
+}
 
-function drawBallPath(id,ball,goal,board,equation){
+function drawBallPath(id,ball,goal,obstacles,board,equation){
 	canvas = document.getElementById(id);
 	ctx = canvas.getContext('2d');
 	var step = 0.01;
-	var b = $.extend({},ball);
+	var b = $.extend({},ball); //clones object
 	//drawBoard(b,)
-	drawBall(id,b,board);
-	while(inRect(b,board)){
+	//drawBall(id,b,board);
+	while(inRect(b,board) && !dead){
+		var dead = false;
 		b.x += step*equation.dx(b.x,b.y);
 		b.y += step*equation.dy(b.x,b.y);
 		drawBall(id,b,board);
+		if (inRect(b,goal)){
+			alert("hit goal!!");
+			break;
+		}
+		for (var i=0; i<obstacles.length;i++){
+			if (inRect(b,obstacles[i])){
+				alert('hit obstacle!');
+				dead = true;
+				break;
+			}
+		}
 	}
 	//alert("ball left screen");
 }

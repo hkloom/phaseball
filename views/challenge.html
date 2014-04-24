@@ -33,12 +33,17 @@
 	ball = json.ball;
 	board = json.board;
 	goal = json.goal;
+	obstacles = json.obstacles;
+	//alert(JSON.stringify(json, null, 4));
 
 
 $(document).ready(function(){
 	drawBackground('canvas', board);
 	drawBall('canvas', json.ball, board);
-	drawGoal('canvas', goal, board);
+	drawRect('canvas', goal, board, "#00FF00");
+	//alert(JSON.stringify(obstacles, null, 4));
+	//alert("num obstacles = "+obstacles.length);
+	drawObstacles('canvas',obstacles,board,"#882200");
 
 
 	//alert(JSON.stringify(json, null, 4));
@@ -46,7 +51,8 @@ $(document).ready(function(){
   		e.preventDefault();
   		drawBackground('canvas', board);
 		drawBall('canvas',ball, board);
-		drawGoal('canvas',goal, board);
+		drawRect('canvas',goal, board,"#00FF00");
+		drawObstacles('canvas',obstacles,board,"#882200");
   		//alert("click");
     	//drawBackground('canvas', board);
 		//drawGoal(goal, board);
@@ -55,11 +61,11 @@ $(document).ready(function(){
       	var dy = new Function('x','y', 'return '+document.getElementById("dy").value+';');
       	var equation = {'dx': dx, 'dy': dy};
 
-    	alert("ball = "+JSON.stringify(ball, null, 4));
+    	//alert("ball = "+JSON.stringify(ball, null, 4));
     	//alert("board = "+JSON.stringify(board, null, 4));
     	//alert("equation = "+equation);
 
-    	drawBallPath('canvas', ball, goal, board, equation);
+    	drawBallPath('canvas', ball, goal, obstacles, board, equation);
 	})
   });
 
