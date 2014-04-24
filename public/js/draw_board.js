@@ -64,18 +64,20 @@ function drawBackground(id, board){
 	}
 }
 
-function drawBall(ball,board){
+function drawBall(id,ball,board){
+	canvas = document.getElementById(id);
+	ctx = canvas.getContext('2d');
 	ctx.fillStyle = "#FF0000";
-	ctx.strokeStyle = '#000000';
 	ctx.beginPath();
    	ctx.arc((ball.x-board.x)/board.width*frame.width, 
    		frame.height-(ball.y-board.y)/board.height*frame.height,
    		10, 0, 2 * Math.PI, false);
     ctx.fill();
-    ctx.stroke();
 }
 
-function drawGoal(goal,board){
+function drawGoal(id,goal,board){
+	canvas = document.getElementById(id);
+	ctx = canvas.getContext('2d');
 	ctx.fillStyle = "#00FF00";
 	ctx.strokeStyle = '#000000';
 	ctx.beginPath();
@@ -89,14 +91,17 @@ function drawGoal(goal,board){
 }
 
 
-function drawBallPath(ball,board,equation){
-	var step = 0.1;
-	var b = ball;
-	drawBall(b,board);
+function drawBallPath(id,ball,goal,board,equation){
+	canvas = document.getElementById(id);
+	ctx = canvas.getContext('2d');
+	var step = 0.01;
+	var b = $.extend({},ball);
+	//drawBoard(b,)
+	drawBall(id,b,board);
 	while(inRect(b,board)){
 		b.x += step*equation.dx(b.x,b.y);
 		b.y += step*equation.dy(b.x,b.y);
-		drawBall(b,board);
+		drawBall(id,b,board);
 	}
-	alert("ball left screen");
+	//alert("ball left screen");
 }

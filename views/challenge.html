@@ -4,7 +4,7 @@
 
 <html>
 <head><title><%= title %></title>
-<link href="/css/schedule.css" rel="stylesheet" type="text/css">
+<link href="/css/challenge.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div align='center' class = "content">
@@ -37,22 +37,29 @@
 
 $(document).ready(function(){
 	drawBackground('canvas', board);
-	drawBall(ball, board);
-	drawGoal(goal, board);
+	drawBall('canvas', json.ball, board);
+	drawGoal('canvas', goal, board);
 
 
 	//alert(JSON.stringify(json, null, 4));
   	$('#draw').click(function(e){
-    	e.preventDefault();
+  		e.preventDefault();
+  		drawBackground('canvas', board);
+		drawBall('canvas',ball, board);
+		drawGoal('canvas',goal, board);
+  		//alert("click");
     	//drawBackground('canvas', board);
 		//drawGoal(goal, board);
 
     	var dx = new Function('x','y', 'return '+document.getElementById("dx").value+';');
       	var dy = new Function('x','y', 'return '+document.getElementById("dy").value+';');
-      	var equation = {dx: dx, dy: dy};
-    	alert("ball = "+ball);
+      	var equation = {'dx': dx, 'dy': dy};
 
-    	drawBallPath(ball, board, equation);
+    	alert("ball = "+JSON.stringify(ball, null, 4));
+    	//alert("board = "+JSON.stringify(board, null, 4));
+    	//alert("equation = "+equation);
+
+    	drawBallPath('canvas', ball, goal, board, equation);
 	})
   });
 
