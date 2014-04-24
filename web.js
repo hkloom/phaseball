@@ -1,7 +1,7 @@
 /*
 =================================================
 
-Schedule Prettyfier
+Phase Ball
 Tai Rodrig
 April 2014
 
@@ -31,7 +31,7 @@ app.get('/challenge/:num', function(req, res) {
 	console.log("num "+num+"!!!");
 	res.render('challenge.html', {
 		title: "Challenge "+num,
-		test: { one: "1", two: "2"}
+		test: { num: num }
 	});
 });
 

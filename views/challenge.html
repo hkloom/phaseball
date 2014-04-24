@@ -15,12 +15,12 @@ THIS PAGE DISPLAYS THE CHALLENGE
 <html>
 <head><title><%= title %></title>
 <link href="/css/schedule.css" rel="stylesheet" type="text/css">
-<script src="/js/draw_sched.js"></script>
+<script src="/js/draw_board.js"></script>
 </head>
 <body>
 <div align='center' class = "content">
 	<br/>
-	<canvas id="canvas" width="750" height = "530"></canvas>
+	<canvas id="canvas" width="600" height = "400"></canvas>
 </div>
 <footer class="footer">
 	Tai Rodrig --- CCS CS130E --- April 2014
@@ -29,6 +29,7 @@ THIS PAGE DISPLAYS THE CHALLENGE
 
 //get the data
 var json = <%- JSON.stringify(test) %>;
+drawBackground('canvas');
 alert(JSON.stringify(json, null, 4));
 
 </script>
