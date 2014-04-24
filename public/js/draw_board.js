@@ -13,11 +13,19 @@ DRAWING FUNCTIONS FOR DISPLAYING THE SCHEDULE
 
 //---GLOBAL VARS---
 frame = {x:0,y:0,width:600,height:400};
-board = {x:4,y:3,width:6,height:4};
 
-//--HELPER FUNCTIONS---
+//---HELPER FUNCTIONS---
 
-function drawBackground(id){
+
+//is the ball currently in the rectangle?
+function inRect(ball,rect){
+	return (ball.x >= rect.x && ball.x <= rect.x + rect.width && ball.y >= rect.y && ball.y <= rect.y + rect.height);
+}
+
+
+//---DRAWING FUNCTIONS---
+
+function drawBackground(id, board){
 	//---DRAW BOARD BACKGROUND---
 	canvas = document.getElementById(id);
 	ctx = canvas.getContext('2d');
@@ -56,7 +64,7 @@ function drawBackground(id){
 	}
 }
 
-function drawBall(ball){
+function drawBall(ball,board){
 	ctx.fillStyle = "#FF0000";
 	ctx.strokeStyle = '#000000';
 	ctx.beginPath();
@@ -65,4 +73,30 @@ function drawBall(ball){
    		10, 0, 2 * Math.PI, false);
     ctx.fill();
     ctx.stroke();
+}
+
+function drawGoal(goal,board){
+	ctx.fillStyle = "#00FF00";
+	ctx.strokeStyle = '#000000';
+	ctx.beginPath();
+   	ctx.rect((goal.x-board.x)/board.width*frame.width, 
+   		frame.height-(goal.y-board.y)/board.height*frame.height,
+   		goal.width/board.width*frame.width,
+   		-goal.height/board.height*frame.height
+   		);
+    ctx.fill();
+    ctx.stroke();
+}
+
+
+function drawBallPath(ball,board,equation){
+	var step = 0.1;
+	var b = ball;
+	drawBall(b,board);
+	while(inRect(b,board)){
+		b.x += step*equation.dx(b.x,b.y);
+		b.y += step*equation.dy(b.x,b.y);
+		drawBall(b,board);
+	}
+	alert("ball left screen");
 }

@@ -1,37 +1,60 @@
-<script>
-/*
-=================================================
-
-Phase Ball
-Tai Rodrig
-April 2014
-
-THIS PAGE DISPLAYS THE CHALLENGE
-
-=================================================
-*/
-</script>
+<script src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="/js/draw_board.js"></script>
 
 <html>
 <head><title><%= title %></title>
 <link href="/css/schedule.css" rel="stylesheet" type="text/css">
-<script src="/js/draw_board.js"></script>
 </head>
 <body>
 <div align='center' class = "content">
 	<br/>
 	<canvas id="canvas" width="600" height = "400"></canvas>
+	<div id = "controls" align = "center">
+		<form id = "input">
+			</br>
+			<label for ="dx"> dx = </label>
+			<input id = "dx" type = "text" class = "equation" value = "1">
+			</br>
+			<label for ="dy"> dy = </label>
+			<input id = "dy" type = "text" class = "equation" value = "0">
+			</br>
+			</br>
+			<input type="submit" value= "Draw" id ="draw">
+		</form>
+	</div>
 </div>
 <footer class="footer">
 	Tai Rodrig --- CCS CS130E --- April 2014
 </footer>
 <script type="text/javascript">
+	//get the data
+	var json = <%- JSON.stringify(game) %>;
+	ball = json.ball;
+	board = json.board;
+	goal = json.goal;
 
-//get the data
-var json = <%- JSON.stringify(test) %>;
-drawBackground('canvas');
-//alert(JSON.stringify(json.ball, null, 4));
-drawBall(json.ball);
+
+$(document).ready(function(){
+	drawBackground('canvas', board);
+	drawBall(ball, board);
+	drawGoal(goal, board);
+
+
+	//alert(JSON.stringify(json, null, 4));
+  	$('#draw').click(function(e){
+    	e.preventDefault();
+    	//drawBackground('canvas', board);
+		//drawGoal(goal, board);
+
+    	var dx = new Function('x','y', 'return '+document.getElementById("dx").value+';');
+      	var dy = new Function('x','y', 'return '+document.getElementById("dy").value+';');
+      	var equation = {dx: dx, dy: dy};
+    	alert("ball = "+ball);
+
+    	drawBallPath(ball, board, equation);
+	})
+  });
 
 </script>
 </body>
