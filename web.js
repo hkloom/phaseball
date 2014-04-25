@@ -32,11 +32,15 @@ app.get('/challenge/:num', function(req, res) {
 	res.render('challenge.html', {
 		title: "Challenge "+num,
 		game: 	{ 
-				ball: {x:5, y:6},
-				board: {x:4, y:3, width:6, height:4},
+				balls: [
+					{x:5, y:6},
+					{x:5, y:7}
+					],
+				board: {x:2, y:1, width:16, height:14},
 				goal: {x:8, y:5, width:0.5,height:1.5},
 				obstacles: 	[
-								{x:7, y:4, width:0.2,height:2}
+							{x:7, y:4, width:0.2,height:2},
+							{x:5.5, y:6, width:0.8,height:0.3}
 							]
 				}
 	});

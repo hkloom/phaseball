@@ -7,10 +7,11 @@
 <link href="/css/challenge.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div align='center' class = "content">
+<div align='center' class = 'content'>
+<div align='center' class = "canvas">
 	<br/>
-	<canvas id="canvas" width="600" height = "400"></canvas>
-	<div id = "controls" align = "center">
+</div>
+<div id = "controls" align = "center">
 		<form id = "input">
 			</br>
 			<label for ="dx"> dx = </label>
@@ -22,24 +23,34 @@
 			</br>
 			<input type="submit" value= "Draw" id ="draw">
 		</form>
-	</div>
+</div>
 </div>
 <footer class="footer">
 	Tai Rodrig --- CCS CS130E --- April 2014
 </footer>
 <script type="text/javascript">
+
 	//get the data
 	var json = <%- JSON.stringify(game) %>;
-	ball = json.ball;
+	balls = json.balls;
 	board = json.board;
 	goal = json.goal;
 	obstacles = json.obstacles;
-	//alert(JSON.stringify(json, null, 4));
+	alert(JSON.stringify(balls, null, 4));
 
 
 $(document).ready(function(){
+	//dynamically create the canvas
+	var canvas = document.createElement('canvas');
+	canvas.id     = 'canvas';
+	canvas.width  = frame.width;
+	canvas.height = frame.height;
+	canvas.style.border   = "1px solid";
+	$('.canvas').append(canvas);
+
+
 	drawBackground('canvas', board);
-	drawBall('canvas', json.ball, board);
+	drawBalls('canvas', balls, board);
 	drawRect('canvas', goal, board, "#00FF00");
 	//alert(JSON.stringify(obstacles, null, 4));
 	//alert("num obstacles = "+obstacles.length);
@@ -50,7 +61,7 @@ $(document).ready(function(){
   	$('#draw').click(function(e){
   		e.preventDefault();
   		drawBackground('canvas', board);
-		drawBall('canvas',ball, board);
+		drawBalls('canvas',balls, board);
 		drawRect('canvas',goal, board,"#00FF00");
 		drawObstacles('canvas',obstacles,board,"#882200");
   		//alert("click");
@@ -65,7 +76,7 @@ $(document).ready(function(){
     	//alert("board = "+JSON.stringify(board, null, 4));
     	//alert("equation = "+equation);
 
-    	drawBallPath('canvas', ball, goal, obstacles, board, equation);
+    	drawBallsPath('canvas', balls, goal, obstacles, board, equation);
 	})
   });
 
