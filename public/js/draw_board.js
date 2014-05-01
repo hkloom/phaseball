@@ -23,12 +23,15 @@ function cosh(x){ return (exp(x)+exp(-x))/2; }
 //---GLOBAL VARS---
 frame = {x:0,y:0,width:800,height:600};
 
+
+
 //---HELPER FUNCTIONS---
-
-
 //is the ball currently in the rectangle?
 function inRect(ball,rect){
-	return (ball.x >= rect.x && ball.x <= rect.x + rect.width && ball.y >= rect.y && ball.y <= rect.y + rect.height);
+	return (ball.x >= rect.x && 
+		ball.x <= rect.x + rect.width &&
+		ball.y >= rect.y && 
+		ball.y <= rect.y + rect.height);
 }
 
 
@@ -122,20 +125,18 @@ function drawBallsPath(id,balls,goal,obstacles,board,equation){
 	for (var k=0;k<balls.length;k++){
 		( function() {
 			var b = $.extend({},balls[k]); //clones object
-			//drawBoard(b,)
-			//drawBall(id,b,board);
 			var dead = false;
 			while(inRect(b,board) && !dead){
 				b.x += step*equation.dx(b.x,b.y);
 				b.y += step*equation.dy(b.x,b.y);
 				drawBall(id,b,board);
 				if (inRect(b,goal)){
-					alert("hit goal!!");
+					console.log("ball "+i+" hit goal!!");
 					break;
 				}
 				for (var i=0; i<obstacles.length;i++){
 					if (inRect(b,obstacles[i])){
-						alert('hit obstacle!');
+						console.log('ball '+i+'hit obstacle!');
 						dead = true;
 						break;
 					}
@@ -143,5 +144,4 @@ function drawBallsPath(id,balls,goal,obstacles,board,equation){
 			}
 		})();
 	}
-	//alert("ball left screen");
 }

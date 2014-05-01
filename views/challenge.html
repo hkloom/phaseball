@@ -1,6 +1,7 @@
 <script src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="/js/draw_board.js"></script>
+<script src="http://charlie-roberts.com/gibberish/scripts/build/gibberish_2.0.js"></script>
 
 <html>
 <head><title><%= title %></title>
@@ -36,10 +37,18 @@
 	board = json.board;
 	goal = json.goal;
 	obstacles = json.obstacles;
-	alert(JSON.stringify(balls, null, 4));
+	console.log(json);
 
 
 $(document).ready(function(){
+	//set up gibber
+	Gibberish.init();
+	Gibberish.Time.export();
+	Gibberish.Binops.export();
+	a = new Gibberish.Saw3();
+
+
+
 	//dynamically create the canvas
 	var canvas = document.createElement('canvas');
 	canvas.id     = 'canvas';
