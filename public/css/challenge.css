@@ -7,11 +7,12 @@
 	  height: 100%;
 	  background: #FFF0B2;
 	}
+	/*
 	.content {
 	  min-height: 100%;
-	  /* equal to footer height */
 	  margin-bottom: -50px; 
 	}
+	*/
 	textarea{
 		width: 500px;
 		height: 250px;

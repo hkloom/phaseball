@@ -1,6 +1,7 @@
 <script src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="/js/draw_board.js"></script>
+<script src="/js/kinetic.js"></script>
 <script src="http://charlie-roberts.com/gibberish/scripts/build/gibberish_2.0.js"></script>
 
 <html>
@@ -8,10 +9,10 @@
 <link href="/css/challenge.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+</br>
+</br>
+<div align = 'center' id = 'container' > </div>
 <div align='center' class = 'content'>
-<div align='center' class = "canvas">
-	<br/>
-</div>
 <div id = "controls" align = "center">
 		<form id = "input">
 			</br>
@@ -47,35 +48,42 @@ $(document).ready(function(){
 	Gibberish.Binops.export();
 	a = new Gibberish.Saw3();
 
+	var stage = new Kinetic.Stage({
+		container: 'container',
+		width: 600,
+		height: 450
+	});
 
+	var layer = new Kinetic.Layer({
+		width: stage.width(),
+		height: stage.height()
+	});
 
-	//dynamically create the canvas
-	var canvas = document.createElement('canvas');
-	canvas.id     = 'canvas';
-	canvas.width  = frame.width;
-	canvas.height = frame.height;
-	canvas.style.border   = "1px solid";
-	$('.canvas').append(canvas);
+	console.log("LAYER = "+ layer);
 
+	//drawRect(layer,goal,board,"#00FF00");
 
-	drawBackground('canvas', board);
-	drawBalls('canvas', balls, board);
-	drawRect('canvas', goal, board, "#00FF00");
+	
+
+	drawBackground(layer, board);
+	drawBalls(layer, balls, board, "#FF0000");
+	drawRect(layer, goal, board, "#00FF00");
 	//alert(JSON.stringify(obstacles, null, 4));
 	//alert("num obstacles = "+obstacles.length);
-	drawObstacles('canvas',obstacles,board,"#882200");
-
+	drawObstacles(layer,obstacles,board,"#882200");
+	
 
 	//alert(JSON.stringify(json, null, 4));
   	$('#draw').click(function(e){
   		e.preventDefault();
-  		drawBackground('canvas', board);
+  		/*drawBackground('canvas', board);
 		drawBalls('canvas',balls, board);
 		drawRect('canvas',goal, board,"#00FF00");
 		drawObstacles('canvas',obstacles,board,"#882200");
-  		//alert("click");
+  		alert("click");
     	//drawBackground('canvas', board);
-		//drawGoal(goal, board);
+		//drawGoal(goal, board); */
+		alert("click");
 
     	var dx = new Function('x','y', 'return '+document.getElementById("dx").value+';');
       	var dy = new Function('x','y', 'return '+document.getElementById("dy").value+';');
@@ -85,9 +93,17 @@ $(document).ready(function(){
     	//alert("board = "+JSON.stringify(board, null, 4));
     	//alert("equation = "+equation);
 
-    	drawBallsPath('canvas', balls, goal, obstacles, board, equation);
-	})
+    	//drawBallsPath('canvas', balls, goal, obstacles, board, equation);
+	});
+
+
+	// add the layer to the stage
+	stage.add(layer);
+
   });
+
+
+	
 
 </script>
 </body>
