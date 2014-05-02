@@ -38,7 +38,7 @@
 	board = json.board;
 	goal = json.goal;
 	obstacles = json.obstacles;
-	console.log(json);
+	//console.log(json);
 
 
 $(document).ready(function(){
@@ -59,31 +59,32 @@ $(document).ready(function(){
 		height: stage.height()
 	});
 
-	console.log("LAYER = "+ layer);
+	//sconsole.log("LAYER = "+ layer);
 
 	//drawRect(layer,goal,board,"#00FF00");
 
 	
 
 	drawBackground(layer, board);
-	drawBalls(layer, balls, board, "#FF0000");
+	var circs = drawBalls(layer, balls, board, "#FF0000");
+	//console.log(circs);
 	drawRect(layer, goal, board, "#00FF00");
 	//alert(JSON.stringify(obstacles, null, 4));
 	//alert("num obstacles = "+obstacles.length);
 	drawObstacles(layer,obstacles,board,"#882200");
 	
 
+
 	//alert(JSON.stringify(json, null, 4));
   	$('#draw').click(function(e){
   		e.preventDefault();
-  		/*drawBackground('canvas', board);
-		drawBalls('canvas',balls, board);
-		drawRect('canvas',goal, board,"#00FF00");
-		drawObstacles('canvas',obstacles,board,"#882200");
-  		alert("click");
+  		drawBackground(layer, board);
+		drawBalls(layer,balls, board);
+		drawRect(layer,goal, board,"#00FF00");
+		drawObstacles(layer,obstacles,board,"#882200");
+  		//alert("click");
     	//drawBackground('canvas', board);
 		//drawGoal(goal, board); */
-		alert("click");
 
     	var dx = new Function('x','y', 'return '+document.getElementById("dx").value+';');
       	var dy = new Function('x','y', 'return '+document.getElementById("dy").value+';');
@@ -93,7 +94,21 @@ $(document).ready(function(){
     	//alert("board = "+JSON.stringify(board, null, 4));
     	//alert("equation = "+equation);
 
-    	//drawBallsPath('canvas', balls, goal, obstacles, board, equation);
+    	//console.log(circs);
+
+    	var anim = new Kinetic.Animation(
+    		function(frame) {
+		/*
+				for (var i = 0; i < circs.length; i++)
+				{
+					//console.log(circs[i])
+	        		// circs[i].move(1,1);
+	    		}
+	  	*/
+	  		}
+	  	, layer);
+        //anim.start();
+
 	});
 
 

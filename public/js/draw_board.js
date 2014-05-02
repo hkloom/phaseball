@@ -37,76 +37,6 @@ function inRect(ball,rect){
 
 //---DRAWING FUNCTIONS---
 
-function drawBackground(layer, board){
-	//---DRAW BOARD BACKGROUND---
-
-	drawRect(layer,{x: layer.x(),
-					y: layer.y(),
-					width:layer.width(),
-					height:layer.height()
-					},
-					board, "#FFFFFF");
-
-	
-	//draw vertical lines and labels
-	var xinterval = layer.width() / board.width;
-	for (var l=0; l<board.width; l++){
-		if (l>0){
-			var line = {A: {x: l*xinterval, y:layer.x()},
-						B: {x: l*xinterval, y:layer.x()+layer.height()}};
-			drawLine(layer,line,"#DDDDDD");
-		}
-
-		var text = new Kinetic.Text({
-		  x: l*xinterval+2,
-		  y: layer.height()-15,
-		  text:  "("+ +(l+board.x)+","+ (board.y)+")",
-		  fontSize: 12,
-		  fontFamily: 'Calibri',
-		  fill: 'black'
-		});
-		layer.add(text);
-		/*
-		ctx.fillStyle = "black"
-		ctx.font="16px Georgia";
-		var fmtstr = "("+ +(l+board.x)+","+ (board.y)+")";
-		ctx.fillText(fmtstr,l*xinterval+2,frame.height-5);*/
-	}
-
-	//draw horizontal lines and labels
-	var yinterval = layer.height() / board.height;
-	for (var l=1; l<board.height; l++){
-		var line = {A: {x: layer.x(), y:l*yinterval},
-					B: {x: layer.x()+layer.width(), y:l*yinterval}};
-		drawLine(layer,line,"#DDDDDD");
-		var text = new Kinetic.Text({
-		  x: 2,
-		  y: l*yinterval-15,
-		  text:  "("+ board.x +","+ +(board.height-l+board.y) +")",
-		  fontSize: 12,
-		  fontFamily: 'Calibri',
-		  fill: 'black'
-		});
-		layer.add(text);
-
-	}
-	/*
-	//draw horizontal lines and labels
-	var yinterval = frame.height / board.height;
-	for (var l=1; l<board.height; l++){
-		ctx.beginPath();
-		ctx.strokeStyle = "#666666";
-		ctx.moveTo(frame.x,l*yinterval);
-		ctx.lineTo(frame.x+frame.width, l*yinterval);
-		ctx.stroke();
-		ctx.fillStyle = "black"
-		ctx.font="16px Georgia";
-		var fmtstr = "("+ board.x +","+ +(board.height-l+board.y) +")";
-		ctx.fillText(fmtstr,2,l*yinterval-5);
-	}
-	*/
-}
-
 function drawLine(layer,line,color){
 	var line = new Kinetic.Line({
 		        points: [line.A.x, line.A.y, line.B.x, line.B.y],
@@ -126,17 +56,23 @@ function drawBall(layer,ball,board,color){
 		stroke: 'black',
 		strokeWidth: 0
 	});
+
+
+
 	// add the shape to the layer
 	layer.add(circ);
+	return circ
 }
 
 
 function drawBalls(layer,balls,board,color){
+	var circs = [];
 	for (var i=0; i<balls.length;i++){
 		//console.log(balls[i]);
 		//alert(JSON.stringify(obstacles[i], null, 4));
-		drawBall(layer,balls[i],board,color);
+		circs.push(drawBall(layer,balls[i],board,color));
 	}
+	return circs;
 }
 
 function drawRect(layer,goal,board,color){
@@ -164,15 +100,18 @@ function drawObstacles(layer,obstacles,board,color){
 }
 
 function drawBallsPath(layer,balls,goal,obstacles,board,equation){
+	console.log("drawing paths");
 	var step = 0.01;
 	for (var k=0;k<balls.length;k++){
 		( function() {
-			var b = $.extend({},balls[k]); //clones object
+			var b = balls[k]; //$.extend({},balls[k]); //clones object
 			var dead = false;
 			while(inRect(b,board) && !dead){
+
 				b.x += step*equation.dx(b.x,b.y);
 				b.y += step*equation.dy(b.x,b.y);
-				drawBall(layer,b,board);
+				//console.log("drawing ball");
+				//drawBall(layer,b,board,"#FF0000");
 				if (inRect(b,goal)){
 					console.log("ball "+i+" hit goal!!");
 					break;
@@ -186,5 +125,48 @@ function drawBallsPath(layer,balls,goal,obstacles,board,equation){
 				}
 			}
 		})();
+	}
+}
+
+
+function drawBackground(layer, board){
+	//---DRAW BOARD BACKGROUND---
+	drawRect(layer,{x: layer.x(),
+					y: layer.y(),
+					width:layer.width(),
+					height:layer.height()},board, "#FFFFFF");
+	//draw vertical lines and labels
+	var xinterval = layer.width() / board.width;
+	for (var l=0; l<board.width; l++){
+		if (l>0){
+			var line = {A: {x: l*xinterval, y:layer.x()},
+						B: {x: l*xinterval, y:layer.x()+layer.height()}};
+			drawLine(layer,line,"#DDDDDD");
+		}
+		var text = new Kinetic.Text({
+		  x: l*xinterval+2,
+		  y: layer.height()-15,
+		  text:  "("+ +(l+board.x)+","+ (board.y)+")",
+		  fontSize: 12,
+		  fontFamily: 'Calibri',
+		  fill: 'black'
+		});
+		layer.add(text);
+	}
+	//draw horizontal lines and labels
+	var yinterval = layer.height() / board.height;
+	for (var l=1; l<board.height; l++){
+		var line = {A: {x: layer.x(), y:l*yinterval},
+					B: {x: layer.x()+layer.width(), y:l*yinterval}};
+		drawLine(layer,line,"#DDDDDD");
+		var text = new Kinetic.Text({
+		  x: 2,
+		  y: l*yinterval-15,
+		  text:  "("+ board.x +","+ +(board.height-l+board.y) +")",
+		  fontSize: 12,
+		  fontFamily: 'Calibri',
+		  fill: 'black'
+		});
+		layer.add(text);
 	}
 }
