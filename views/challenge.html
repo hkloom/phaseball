@@ -10,6 +10,7 @@
 <body>
 </br>
 </br>
+<div align = 'center' class = "score">0</div>
 <div align = 'center' id = 'container' > </div>
 <div align='center' class = 'content'>
 <div id = "controls" align = "center">
@@ -35,6 +36,8 @@
 	goal = json.goal;
 	obstacles = json.obstacles;
 	drawing = false;
+	score = balls.length;
+	//
 	//console.log(json);
 
 
@@ -61,7 +64,8 @@ $(document).ready(function(){
 	drawRect(layer, goal, board, "#00FF00");
 	drawObstacles(layer,obstacles,board,"#882200");
 	
-
+	$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
+);
 
 	//alert(JSON.stringify(json, null, 4));
   	$('#draw').click(function(e){
@@ -79,17 +83,37 @@ $(document).ready(function(){
 	    			balllayer.draw();
 					for (var i = 0; i < balls.length; i++)
 					{
-
+						var valid = true;
 						var newX = balls[i].x + 0.05*dx(balls[i].x,balls[i].y);
 						var newY = balls[i].y + 0.05*dy(balls[i].x,balls[i].y);
+						for (var o = 0; o < obstacles.length; o++){
+							if (inRect({x:newX,y:newY},obstacles[o])){
+								console.log("hit obstacle");
+								valid = false;
+								score-=1;
+								$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
+);
+							}
+						}
 
-						if (inRect({x:newX,y:newY},board)){
+							if (inRect({x:newX,y:newY},goal)){
+								console.log("goal!");
+								valid = false;
+								score+=10;
+								$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
+);
+							}
+
+						if (inRect({x:newX,y:newY},board) && valid){
 							balls[i].x = newX;
 							balls[i].y = newY;
 							bz[i].x((balls[i].x-board.x)/board.width*balllayer.width());
 							bz[i].y(balllayer.height()*(1-((balls[i].y-board.y)/board.height)));
 						}else{
 							done--;
+							score-=1;
+							$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
+);
 							console.log("done drawing");
 						}
 		    		}
