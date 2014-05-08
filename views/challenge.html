@@ -2,7 +2,6 @@
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="/js/draw_board.js"></script>
 <script src="/js/kinetic.js"></script>
-<script src="http://charlie-roberts.com/gibberish/scripts/build/gibberish_2.0.js"></script>
 
 <html>
 <head><title><%= title %></title>
@@ -27,9 +26,6 @@
 		</form>
 </div>
 </div>
-<footer class="footer">
-	Tai Rodrig --- CCS CS130E --- April 2014
-</footer>
 <script type="text/javascript">
 
 	//get the data
@@ -42,11 +38,6 @@
 
 
 $(document).ready(function(){
-	//set up gibber
-	Gibberish.init();
-	Gibberish.Time.export();
-	Gibberish.Binops.export();
-	a = new Gibberish.Saw3();
 
 	var stage = new Kinetic.Stage({
 		container: 'container',
@@ -58,6 +49,10 @@ $(document).ready(function(){
 		width: stage.width(),
 		height: stage.height()
 	});
+	var balllayer = new Kinetic.Layer({
+		width: stage.width(),
+		height: stage.height()
+	});
 
 	//sconsole.log("LAYER = "+ layer);
 
@@ -66,7 +61,7 @@ $(document).ready(function(){
 	
 
 	drawBackground(layer, board);
-	var circs = drawBalls(layer, balls, board, "#FF0000");
+	var circs = drawBalls(balllayer, balls, board, "#FF0000");
 	//console.log(circs);
 	drawRect(layer, goal, board, "#00FF00");
 	//alert(JSON.stringify(obstacles, null, 4));
@@ -78,10 +73,10 @@ $(document).ready(function(){
 	//alert(JSON.stringify(json, null, 4));
   	$('#draw').click(function(e){
   		e.preventDefault();
-  		drawBackground(layer, board);
-		drawBalls(layer,balls, board);
-		drawRect(layer,goal, board,"#00FF00");
-		drawObstacles(layer,obstacles,board,"#882200");
+  		//drawBackground(layer, board);
+		//drawBalls(layer,balls, board);
+		//drawRect(layer,goal, board,"#00FF00");
+		//drawObstacles(layer,obstacles,board,"#882200");
   		//alert("click");
     	//drawBackground('canvas', board);
 		//drawGoal(goal, board); */
@@ -98,22 +93,34 @@ $(document).ready(function(){
 
     	var anim = new Kinetic.Animation(
     		function(frame) {
-		/*
-				for (var i = 0; i < circs.length; i++)
+    			var bz = balllayer.getChildren();
+    			var done = bz.length;
+    			balllayer.draw();
+				for (var i = 0; i < balls.length; i++)
 				{
-					//console.log(circs[i])
-	        		// circs[i].move(1,1);
+					if (inRect(balls[i],board)){
+					balls[i].x +=0.01;
+					balls[i].y+=0.01;
+					bz.x((balls[i].x-board.x)/board.width*balllayer.width());
+					bz.y(balllayer.height()*(1-((balls[i].y-board.y)/board.height)));
+					}else{
+						done--;
+						console.log("done drawing");
+					}
 	    		}
-	  	*/
+	    		if (done==0) this.stop();
+		    	//drawBalls(balllayer, balls, board, "#FF0000");
+		    	//console.log("drawing");
+
 	  		}
-	  	, layer);
-        //anim.start();
+	  	, balllayer);
+        anim.start();
 
 	});
 
-
 	// add the layer to the stage
 	stage.add(layer);
+	stage.add(balllayer);
 
   });
 

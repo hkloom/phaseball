@@ -1,11 +1,11 @@
 /*
 =================================================
 
-Schedule Prettifier
+PHASEBALL
 Tai Rodrig
-April 2014
+April-May 2014
 
-DRAWING FUNCTIONS FOR DISPLAYING THE SCHEDULE
+DRAWING FUNCTIONS FOR DISPLAYING THE CHALLENGE
 
 =================================================
 */
