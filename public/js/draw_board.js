@@ -99,36 +99,6 @@ function drawObstacles(layer,obstacles,board,color){
 	}
 }
 
-function drawBallsPath(layer,balls,goal,obstacles,board,equation){
-	console.log("drawing paths");
-	var step = 0.01;
-	for (var k=0;k<balls.length;k++){
-		( function() {
-			var b = balls[k]; //$.extend({},balls[k]); //clones object
-			var dead = false;
-			while(inRect(b,board) && !dead){
-
-				b.x += step*equation.dx(b.x,b.y);
-				b.y += step*equation.dy(b.x,b.y);
-				//console.log("drawing ball");
-				//drawBall(layer,b,board,"#FF0000");
-				if (inRect(b,goal)){
-					console.log("ball "+i+" hit goal!!");
-					break;
-				}
-				for (var i=0; i<obstacles.length;i++){
-					if (inRect(b,obstacles[i])){
-						console.log('ball '+i+'hit obstacle!');
-						dead = true;
-						break;
-					}
-				}
-			}
-		})();
-	}
-}
-
-
 function drawBackground(layer, board){
 	//---DRAW BOARD BACKGROUND---
 	drawRect(layer,{x: layer.x(),
@@ -169,4 +139,19 @@ function drawBackground(layer, board){
 		});
 		layer.add(text);
 	}
+}
+
+function reset(layer,balls,originalballs){
+	drawing = false;
+	var bz = layer.getChildren();
+	for (var i = 0; i < balls.length; i++){
+		console.log("setting ball "+i+" to coordinate ("+originalballs[i].x+","+originalballs[i].y+")");
+		balls[i].x = originalballs[i].x;
+		balls[i].y = originalballs[i].y;
+		bz[i].x((balls[i].x-board.x)/board.width*layer.width());
+		bz[i].y(layer.height()*(1-((balls[i].y-board.y)/board.height)));
+	}
+	score = balls.length;
+	$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>");
+	layer.draw();
 }

@@ -23,6 +23,7 @@
 			<input id = "dy" type = "text" class = "equation" value = "0">
 			</br>
 			</br>
+			<input type="submit" value= "Reset" id ="reset">
 			<input type="submit" value= "Draw" id ="draw">
 		</form>
 </div>
@@ -32,6 +33,13 @@
 	//get the data
 	var json = <%- JSON.stringify(game) %>;
 	balls = json.balls;
+	var originalballs = [];
+	for (var i = 0; i < balls.length; i++){
+		originalballs[i] = {};
+		originalballs[i].x = balls[i].x;
+		originalballs[i].y = balls[i].y;
+	}
+	console.log(originalballs);
 	board = json.board;
 	goal = json.goal;
 	obstacles = json.obstacles;
@@ -67,11 +75,15 @@ $(document).ready(function(){
 	$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
 );
 
+	$('#reset').click(function(e){
+  		e.preventDefault();
+  		reset(balllayer, balls, originalballs);
+  	});
+
 	//alert(JSON.stringify(json, null, 4));
   	$('#draw').click(function(e){
   		e.preventDefault();
-  		if (!drawing){
-  			drawing = true;
+  		var anim;
 	    	var dx = new Function('x','y', 'return '+document.getElementById("dx").value+';');
 	      	var dy = new Function('x','y', 'return '+document.getElementById("dy").value+';');
 	      	var equation = {'dx': dx, 'dy': dy};
@@ -83,14 +95,14 @@ $(document).ready(function(){
 	    			balllayer.draw();
 					for (var i = 0; i < balls.length; i++)
 					{
-						var valid = true;
+						balls[i].valid = true;
 						var newX = balls[i].x + 0.05*dx(balls[i].x,balls[i].y);
 						var newY = balls[i].y + 0.05*dy(balls[i].x,balls[i].y);
 						for (var o = 0; o < obstacles.length; o++){
 							if (inRect({x:newX,y:newY},obstacles[o])){
 								console.log("hit obstacle");
-								valid = false;
-								score-=1;
+								balls[i] = false;
+								score-=10;
 								$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
 );
 							}
@@ -98,13 +110,13 @@ $(document).ready(function(){
 
 							if (inRect({x:newX,y:newY},goal)){
 								console.log("goal!");
-								valid = false;
+								balls[i] = false;
 								score+=10;
 								$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
 );
 							}
 
-						if (inRect({x:newX,y:newY},board) && valid){
+						if (inRect({x:newX,y:newY},board) && balls[i].valid){
 							balls[i].x = newX;
 							balls[i].y = newY;
 							bz[i].x((balls[i].x-board.x)/board.width*balllayer.width());
@@ -123,7 +135,13 @@ $(document).ready(function(){
 		    		}
 		  		}
 		  	, balllayer);
+
+  		if (!drawing){
+  			drawing = true;
 	        anim.start();
+	    }else{
+	    	drawing = false;
+	    	anim.stop();
 	    }
 
 	});
