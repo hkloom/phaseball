@@ -34,6 +34,7 @@
 	board = json.board;
 	goal = json.goal;
 	obstacles = json.obstacles;
+	drawing = false;
 	//console.log(json);
 
 
@@ -54,18 +55,10 @@ $(document).ready(function(){
 		height: stage.height()
 	});
 
-	//sconsole.log("LAYER = "+ layer);
-
-	//drawRect(layer,goal,board,"#00FF00");
-
-	
-
 	drawBackground(layer, board);
 	var circs = drawBalls(balllayer, balls, board, "#FF0000");
 	//console.log(circs);
 	drawRect(layer, goal, board, "#00FF00");
-	//alert(JSON.stringify(obstacles, null, 4));
-	//alert("num obstacles = "+obstacles.length);
 	drawObstacles(layer,obstacles,board,"#882200");
 	
 
@@ -73,52 +66,44 @@ $(document).ready(function(){
 	//alert(JSON.stringify(json, null, 4));
   	$('#draw').click(function(e){
   		e.preventDefault();
-  		//drawBackground(layer, board);
-		//drawBalls(layer,balls, board);
-		//drawRect(layer,goal, board,"#00FF00");
-		//drawObstacles(layer,obstacles,board,"#882200");
-  		//alert("click");
-    	//drawBackground('canvas', board);
-		//drawGoal(goal, board); */
+  		if (!drawing){
+  			drawing = true;
+	    	var dx = new Function('x','y', 'return '+document.getElementById("dx").value+';');
+	      	var dy = new Function('x','y', 'return '+document.getElementById("dy").value+';');
+	      	var equation = {'dx': dx, 'dy': dy};
 
-    	var dx = new Function('x','y', 'return '+document.getElementById("dx").value+';');
-      	var dy = new Function('x','y', 'return '+document.getElementById("dy").value+';');
-      	var equation = {'dx': dx, 'dy': dy};
+	    	var anim = new Kinetic.Animation(
+	    		function(frame) {
+	    			var bz = balllayer.getChildren();
+	    			var done = bz.length;
+	    			balllayer.draw();
+					for (var i = 0; i < balls.length; i++)
+					{
 
-    	//alert("ball = "+JSON.stringify(ball, null, 4));
-    	//alert("board = "+JSON.stringify(board, null, 4));
-    	//alert("equation = "+equation);
+						var newX = balls[i].x + 0.05*dx(balls[i].x,balls[i].y);
+						var newY = balls[i].y + 0.05*dy(balls[i].x,balls[i].y);
 
-    	//console.log(circs);
-
-    	var anim = new Kinetic.Animation(
-    		function(frame) {
-    			var bz = balllayer.getChildren();
-    			var done = bz.length;
-    			balllayer.draw();
-				for (var i = 0; i < balls.length; i++)
-				{
-					if (inRect(balls[i],board)){
-					balls[i].x +=0.01;
-					balls[i].y+=0.01;
-					bz.x((balls[i].x-board.x)/board.width*balllayer.width());
-					bz.y(balllayer.height()*(1-((balls[i].y-board.y)/board.height)));
-					}else{
-						done--;
-						console.log("done drawing");
-					}
-	    		}
-	    		if (done==0) this.stop();
-		    	//drawBalls(balllayer, balls, board, "#FF0000");
-		    	//console.log("drawing");
-
-	  		}
-	  	, balllayer);
-        anim.start();
+						if (inRect({x:newX,y:newY},board)){
+							balls[i].x = newX;
+							balls[i].y = newY;
+							bz[i].x((balls[i].x-board.x)/board.width*balllayer.width());
+							bz[i].y(balllayer.height()*(1-((balls[i].y-board.y)/board.height)));
+						}else{
+							done--;
+							console.log("done drawing");
+						}
+		    		}
+		    		if (done==0) {
+		    			drawing = false;
+		    			this.stop();
+		    		}
+		  		}
+		  	, balllayer);
+	        anim.start();
+	    }
 
 	});
-
-	// add the layer to the stage
+	// add the layers to the stage
 	stage.add(layer);
 	stage.add(balllayer);
 

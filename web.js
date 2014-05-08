@@ -34,7 +34,7 @@ app.get('/challenge/:num', function(req, res) {
 		game: 	{ 
 				balls: [
 					{x:5, y:6},
-					{x:5, y:7}
+					{x:4.3, y:7}
 					],
 				board: {x:2, y:1, width:16, height:14},
 				goal: {x:8, y:5, width:0.5,height:1.5},
