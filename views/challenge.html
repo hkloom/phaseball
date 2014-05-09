@@ -44,7 +44,7 @@
 	goal = json.goal;
 	obstacles = json.obstacles;
 	drawing = false;
-	score = balls.length;
+	score = 0;
 	//
 	//console.log(json);
 
@@ -96,24 +96,22 @@ $(document).ready(function(){
 					for (var i = 0; i < balls.length; i++)
 					{
 						balls[i].valid = true;
+						balls[i].points = 0;
 						var newX = balls[i].x + 0.05*dx(balls[i].x,balls[i].y);
 						var newY = balls[i].y + 0.05*dy(balls[i].x,balls[i].y);
 						for (var o = 0; o < obstacles.length; o++){
 							if (inRect({x:newX,y:newY},obstacles[o])){
 								console.log("hit obstacle");
+								balls[i].points = -1;
 								balls[i].valid = false;
-								score-=10;
-								$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
-);
+		
 							}
 						}
 
 							if (inRect({x:newX,y:newY},goal)){
 								console.log("goal!");
 								balls[i].valid = false;
-								score+=10;
-								$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
-);
+								balls[i].points = 1;
 							}
 
 						if (inRect({x:newX,y:newY},board) && balls[i].valid){
@@ -124,15 +122,23 @@ $(document).ready(function(){
 						}else{
 							done--;
 							//score-=1;
-							$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
-);
+						
 							console.log("done drawing");
 						}
+
 		    		}
 		    		if (done==0) {
 		    			drawing = false;
 		    			this.stop();
 		    		}
+
+		    		score = 0;
+		    		for (var i = 0; i < balls.length; i++){
+		    			score += balls[i].points;
+		    		}
+		    		$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
+);
+
 		  		}
 		  	, balllayer);
 
