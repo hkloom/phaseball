@@ -33,7 +33,7 @@
 	//get the data
 	var json = <%- JSON.stringify(game) %>;
 	balls = json.balls;
-	var originalballs = [];
+	originalballs = [];
 	for (var i = 0; i < balls.length; i++){
 		originalballs[i] = {};
 		originalballs[i].x = balls[i].x;
@@ -101,7 +101,7 @@ $(document).ready(function(){
 						for (var o = 0; o < obstacles.length; o++){
 							if (inRect({x:newX,y:newY},obstacles[o])){
 								console.log("hit obstacle");
-								balls[i] = false;
+								balls[i].valid = false;
 								score-=10;
 								$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
 );
@@ -110,7 +110,7 @@ $(document).ready(function(){
 
 							if (inRect({x:newX,y:newY},goal)){
 								console.log("goal!");
-								balls[i] = false;
+								balls[i].valid = false;
 								score+=10;
 								$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
 );
@@ -123,7 +123,7 @@ $(document).ready(function(){
 							bz[i].y(balllayer.height()*(1-((balls[i].y-board.y)/board.height)));
 						}else{
 							done--;
-							score-=1;
+							//score-=1;
 							$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
 );
 							console.log("done drawing");
@@ -137,9 +137,11 @@ $(document).ready(function(){
 		  	, balllayer);
 
   		if (!drawing){
+  			console.log("drawing");
   			drawing = true;
 	        anim.start();
 	    }else{
+	    	console.log("stopping");
 	    	drawing = false;
 	    	anim.stop();
 	    }

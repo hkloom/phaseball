@@ -142,12 +142,15 @@ function drawBackground(layer, board){
 }
 
 function reset(layer,balls,originalballs){
+	console.log(balls);
 	drawing = false;
 	var bz = layer.getChildren();
 	for (var i = 0; i < balls.length; i++){
+		console.log("ball "+i+" has coordinates ("+balls[i].x+","+balls[i].y+")");
 		console.log("setting ball "+i+" to coordinate ("+originalballs[i].x+","+originalballs[i].y+")");
 		balls[i].x = originalballs[i].x;
 		balls[i].y = originalballs[i].y;
+		console.log("now ball "+i+" has coordinates ("+balls[i].x+","+balls[i].y+")");
 		bz[i].x((balls[i].x-board.x)/board.width*layer.width());
 		bz[i].y(layer.height()*(1-((balls[i].y-board.y)/board.height)));
 	}
