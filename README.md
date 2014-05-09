@@ -26,3 +26,12 @@ cd node
 make
 sudo make install
 ```
+
+<p> Ubuntu install:</p>
+<code>
+  sudo apt-get install nodejs
+  sudo apt-get install npm
+  sudo npm install -g foreman
+  sudo apt-get install nodejs-legacy
+</code>
+
