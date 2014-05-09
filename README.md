@@ -19,7 +19,6 @@ if you have homebrew installed, you can just:
 </code>
 
 else:
-
 ```
 git clone git://github.com/ry/node.git
 cd node
