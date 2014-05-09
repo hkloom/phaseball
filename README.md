@@ -11,7 +11,5 @@ https://help.github.com/articles/fork-a-repo
 Getting set up
 -------------------
 
-<p>Install NodeJS and npm:</p>
-```
-curl http://npmjs.org/install.sh | sh
-```
+<p>Install Node:</p>
+http://nodejs.org/download/
