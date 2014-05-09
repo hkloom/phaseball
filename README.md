@@ -18,10 +18,10 @@ if you have homebrew installed, you can just:
 
 else:
 
-<code>
+```
 git clone git://github.com/ry/node.git
 cd node
 ./configure
 make
 sudo make install
-</code>
+```
