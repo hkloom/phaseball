@@ -9,7 +9,7 @@ game that has challenges which you solve with math, by moving a ball into a goal
 Getting set up
 -------------------
 
-Install Node:
+<p>Install Node:</p>
 if you have homebrew installed, you can just:
 
 <code>
