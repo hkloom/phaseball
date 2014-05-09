@@ -11,18 +11,7 @@ https://help.github.com/articles/fork-a-repo
 Getting set up
 -------------------
 
-<p>Install Node:</p>
-if you have homebrew installed, you can just:
-
-<code>
-  brew install node
-</code>
-
-else:
+<p>Install NodeJS and npm:</p>
 ```
-git clone git://github.com/ry/node.git
-cd node
-./configure
-make
-sudo make install
+curl http://npmjs.org/install.sh | sh
 ```
