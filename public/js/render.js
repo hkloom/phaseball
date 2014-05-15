@@ -144,12 +144,9 @@ define([], function(){
 	this.balllayer = balllayer;
     }
     
-
-    
-    
     function start(game,scoreFunc){
 	var balllayer = this.balllayer;
-	console.log (balllayer);
+
 	function animate(frame)
 	{
 	    var boardInstance = game.update(0.05);

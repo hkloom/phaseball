@@ -36,7 +36,8 @@
       
       function scoreFunc(score)
       {
-      console.log(score);
+        $("div.score").html(score);
+        console.log(score);
       }
 
       require(["/js/game.js"], function(gameMod)

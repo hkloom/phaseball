@@ -13,6 +13,7 @@ define([], function(){
 	    this.gameballs[i].x = challenge.balls[i].x;
 	    this.gameballs[i].y = challenge.balls[i].y;
 	    this.gameballs[i].valid = true;
+	    this.gameballs[i].points = 1;
 	}
 
     }
@@ -46,13 +47,16 @@ define([], function(){
 		    this.gameballs[i].x = newX;
 		    this.gameballs[i].y = newY;
 		}
+		else{
+		    this.gameballs[i].valid = false;
+		}
 	    }
 	    else{done--;}
 	}
-	if(!done) return null;
+	if(done == 0) return null;
 	
-	for (var i = 0; i < this.gameballs[i].length; i++){
-	    score += this.gameballs[i].points;
+	for (var i = 0; i < this.gameballs.length; i++){
+	    this.score += this.gameballs[i].points;
 	}
 	
 	return {'gameballs': this.gameballs};
