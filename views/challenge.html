@@ -41,15 +41,26 @@
 
       require(["/js/game.js"], function(gameMod)
       {
-      challenge.dx = new Function('x', 'y', 
-      'return ' + document.getElementById("dx").value + ';');
-      challenge.dy = new Function('x', 'y',
-      'return ' + document.getElementById("dy").value + ';');
+        
       
-      gameMod.init(challenge);		  
-      require(["/js/render.js"], function(renderMod){
-      renderMod.init(gameMod,'container');
-      });
+        gameMod.init(challenge);		  
+        require(["/js/render.js"], function(renderMod){
+          renderMod.init(gameMod,'container');
+          $('#reset').click(function(e){
+            e.preventDefault();
+            renderMod.stop();
+            gameMod.init(challenge);
+            renderMod.init(gameMod,'container');
+          });
+          $('#draw').click(function(e){
+            e.preventDefault();
+            gameMod.dx = new Function('x', 'y', 
+             'return ' + document.getElementById("dx").value + ';');
+            gameMod.dy = new Function('x', 'y',
+             'return ' + document.getElementById("dy").value + ';');
+            renderMod.start(gameMod,scoreFunc);
+          });
+        });
       });
 	  
 
