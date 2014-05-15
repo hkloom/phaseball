@@ -141,40 +141,47 @@ define([], function(){
 	stage.add(layer);
 	stage.add(balllayer);
 	stage.draw();
+	this.balllayer = balllayer;
     }
-    
-    function animate(balllayer)
-    {
-	var boardInstance = this.game.update(0.05);
-	if(!boardInstance){
-	    this.stop();
-	    return;
-        }
-	var balls = boardInstance.balls;
-	var board = boardInstance.board;
-	var bz = balllayer.getChildren();
-	for (var i = 0; i < balls.length; i++)
-	{
-	    bz[i].x((balls[i].x-board.x)/board.width*balllayer.width());
-	    bz[i].y(balllayer.height()*(1-((balls[i].y-board.y)/board.height)));
-	}
-	balllayer.draw();
-	this.scoreFunc(this.game.score);
-    }
-    
     
     function start(game,scoreFunc){
-	this.game = game;
-	this.scoreFunc = scoreFunc;
-	this.anim = new Kinetic.Animation(animate, balllayer);
+	var balllayer = this.balllayer;
+
+	function animate(frame)
+	{
+	    var boardInstance = game.update(0.05);
+	    if(!boardInstance){
+		this.stop();
+		return;
+            }
+	    var balls = boardInstance.gameballs;
+	    var board = boardInstance.board;
+	    
+	    var bz = balllayer.getChildren();
+	    
+	    for (var i = 0; i < balls.length; i++)
+	    {
+		bz[i].x((balls[i].x-game.challenge.board.x)/
+			game.challenge.board.width*balllayer.width());
+		bz[i].y(balllayer.height()*
+			(1-((game.gameballs[i].y-game.challenge.board.y)/
+			    game.challenge.board.height)));
+	    }
+	    balllayer.draw();
+	    scoreFunc(game.score);
+	    
+	}
+	this.anim = new Kinetic.Animation(animate, this.balllayer);
+	this.anim.start();
     }
     function stop(){
-	anim.stop();
+	this.anim.stop();
     }
     return {
 	'init': init,
 	'start': start,
-	'stop' : stop};
+	'stop' : stop
+    };
 
 });
 
