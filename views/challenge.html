@@ -51,6 +51,8 @@
 
 $(document).ready(function(){
 
+	var animation;
+
 	var stage = new Kinetic.Stage({
 		container: 'container',
 		width: 600,
@@ -77,6 +79,7 @@ $(document).ready(function(){
 
 	$('#reset').click(function(e){
   		e.preventDefault();
+  		animation.stop();
   		reset(balllayer, balls, originalballs);
   	});
 
@@ -88,7 +91,7 @@ $(document).ready(function(){
 	      	var dy = new Function('x','y', 'return '+document.getElementById("dy").value+';');
 	      	var equation = {'dx': dx, 'dy': dy};
 
-	    	var anim = new Kinetic.Animation(
+	    	animation = new Kinetic.Animation(
 	    		function(frame) {
 	    			var bz = balllayer.getChildren();
 	    			var done = bz.length;
@@ -97,33 +100,28 @@ $(document).ready(function(){
 					{
 						balls[i].valid = true;
 						balls[i].points = 0;
-						var newX = balls[i].x + 0.05*dx(balls[i].x,balls[i].y);
-						var newY = balls[i].y + 0.05*dy(balls[i].x,balls[i].y);
+						var newball = getEulerApprox(balls[i],dx,dy,0.05);
 						for (var o = 0; o < obstacles.length; o++){
-							if (inRect({x:newX,y:newY},obstacles[o])){
-								console.log("hit obstacle");
+							if (inRect(newball,obstacles[o])){
+								//console.log("hit obstacle");
 								balls[i].points = -1;
 								balls[i].valid = false;
-		
 							}
 						}
-
-							if (inRect({x:newX,y:newY},goal)){
-								console.log("goal!");
+							if (inRect(newball,goal)){
+								//console.log("goal!");
 								balls[i].valid = false;
 								balls[i].points = 1;
 							}
 
-						if (inRect({x:newX,y:newY},board) && balls[i].valid){
-							balls[i].x = newX;
-							balls[i].y = newY;
+						if (inRect(newball,board) && balls[i].valid){
+							balls[i] = newball;
 							bz[i].x((balls[i].x-board.x)/board.width*balllayer.width());
 							bz[i].y(balllayer.height()*(1-((balls[i].y-board.y)/board.height)));
+							balls[i].points = 0;
 						}else{
 							done--;
-							//score-=1;
-						
-							console.log("done drawing");
+							//score-=1;				
 						}
 
 		    		}
@@ -134,10 +132,11 @@ $(document).ready(function(){
 
 		    		score = 0;
 		    		for (var i = 0; i < balls.length; i++){
+		    			console.log("balls["+i+"].points = "+balls[i].points);
 		    			score += balls[i].points;
-		    		}
-		    		$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
-);
+		    			}
+		    		console.log("score = "+score);
+		    		$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>");
 
 		  		}
 		  	, balllayer);
@@ -145,11 +144,11 @@ $(document).ready(function(){
   		if (!drawing){
   			console.log("drawing");
   			drawing = true;
-	        anim.start();
+	        animation.start();
 	    }else{
 	    	console.log("stopping");
 	    	drawing = false;
-	    	anim.stop();
+	    	animation.stop();
 	    }
 
 	});

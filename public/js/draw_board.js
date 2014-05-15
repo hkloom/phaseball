@@ -34,6 +34,11 @@ function inRect(ball,rect){
 		ball.y <= rect.y + rect.height);
 }
 
+function getEulerApprox(ball,funcx,funcy, step){
+	var newX = ball.x + step*funcx(ball.x,ball.y);
+	var newY = ball.y + step*funcy(ball.x,ball.y);
+	return {x: newX, y:newY};
+}
 
 //---DRAWING FUNCTIONS---
 
@@ -62,6 +67,12 @@ function drawBall(layer,ball,board,color){
 	// add the shape to the layer
 	layer.add(circ);
 	return circ
+}
+
+function drawBackgroundGuide(layer,dx,dy,board){
+	for (var i=0; i<layer.width()/board.width;i++){
+		
+	}
 }
 
 
@@ -144,6 +155,7 @@ function drawBackground(layer, board){
 function reset(layer,balls,originalballs){
 	console.log(balls);
 	drawing = false;
+	score = 0;
 	var bz = layer.getChildren();
 	for (var i = 0; i < balls.length; i++){
 		console.log("ball "+i+" has coordinates ("+balls[i].x+","+balls[i].y+")");
@@ -154,7 +166,6 @@ function reset(layer,balls,originalballs){
 		bz[i].x((balls[i].x-board.x)/board.width*layer.width());
 		bz[i].y(layer.height()*(1-((balls[i].y-board.y)/board.height)));
 	}
-	score = balls.length;
 	$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>");
 	layer.draw();
 }
