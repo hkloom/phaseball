@@ -10,7 +10,7 @@
   <body>
     <br>
     <br>
-    <div align = 'center' class = "score">0</div>
+    <div align = 'center' class = "score">Score = 0</div>
     <div align = 'center' id = 'container' > </div>
     <div align='center' class = 'content'>
       <div id = "controls" align = "center">
@@ -34,8 +34,8 @@
       
       function scoreFunc(score)
       {
-        $("div.score").html(score);
-        console.log(score);
+        $("div.score").html("Score = "+score);
+        //console.log(score);
       }
 
       require(["/js/game.js"], function(gameMod)

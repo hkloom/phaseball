@@ -13,7 +13,7 @@ define([], function(){
 	    this.gameballs[i].x = challenge.balls[i].x;
 	    this.gameballs[i].y = challenge.balls[i].y;
 	    this.gameballs[i].valid = true;
-	    this.gameballs[i].points = 1;
+	    this.gameballs[i].points = 0;
 	}
 
     }
@@ -32,8 +32,8 @@ define([], function(){
 		
 		for (var o = 0; o < this.challenge.obstacles.length; o++){
 		    if (inRect({x:newX,y:newY},this.challenge.obstacles[o])){
-			this.gameballs[i].points = -1;
-			this.gameballs[i].valid = false;
+				this.gameballs[i].points = -1;
+				this.gameballs[i].valid = false;
 		    }
 		}
 		
@@ -55,9 +55,11 @@ define([], function(){
 	}
 	if(done == 0) return null;
 	
+	var sum = 0;
 	for (var i = 0; i < this.gameballs.length; i++){
-	    this.score += this.gameballs[i].points;
+	    sum += this.gameballs[i].points;
 	}
+	this.score = sum;
 	
 	return {'gameballs': this.gameballs};
     }
