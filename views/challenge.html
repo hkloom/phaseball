@@ -1,162 +1,60 @@
-<script src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script src="/js/draw_board.js"></script>
-<script src="/js/kinetic.js"></script>
+
 
 <html>
-<head><title><%= title %></title>
-<link href="/css/challenge.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-</br>
-</br>
-<div align = 'center' class = "score">0</div>
-<div align = 'center' id = 'container' > </div>
-<div align='center' class = 'content'>
-<div id = "controls" align = "center">
-		<form id = "input">
-			</br>
-			<label for ="dx"> dx = </label>
-			<input id = "dx" type = "text" class = "equation" value = "1">
-			</br>
-			<label for ="dy"> dy = </label>
-			<input id = "dy" type = "text" class = "equation" value = "0">
-			</br>
-			</br>
-			<input type="submit" value= "Reset" id ="reset">
-			<input type="submit" value= "Draw" id ="draw">
-		</form>
-</div>
-</div>
-<script type="text/javascript">
+  <head><title><%= title %></title>
+    <link href="/css/challenge.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="/js/draw_board.js"></script>
+    <script src="/js/kinetic.js"></script>
+    <script src="/js/require.js"></script>
+  </head>
+  <body>
+    <br>
+    <br>
+    <div align = 'center' class = "score">0</div>
+    <div align = 'center' id = 'container' > </div>
+    <div align='center' class = 'content'>
+      <div id = "controls" align = "center">
+	<form id = "input">
+	  <br>
+	  <label for ="dx"> dx = </label>
+	  <input id = "dx" type = "text" class = "equation" value = "1">
+	  <br>
+	  <label for ="dy"> dy = </label>
+	  <input id = "dy" type = "text" class = "equation" value = "0">
+	  <br>
+	  <br>
+	  <input type="submit" value= "Reset" id ="reset">
+	  <input type="submit" value= "Draw" id ="draw">
+	</form>
+      </div>
+    </div>
+    <script type="text/javascript">
+      
+      var challenge = <%- JSON.stringify(game) -%>;
+      
+      function scoreFunc(score)
+      {
+      console.log(score);
+      }
 
-	//get the data
-	var json = <%- JSON.stringify(game) %>;
-	balls = json.balls;
-	originalballs = [];
-	for (var i = 0; i < balls.length; i++){
-		originalballs[i] = {};
-		originalballs[i].x = balls[i].x;
-		originalballs[i].y = balls[i].y;
-	}
-	console.log(originalballs);
-	board = json.board;
-	goal = json.goal;
-	obstacles = json.obstacles;
-	drawing = false;
-	score = balls.length;
-	//
-	//console.log(json);
-
-
-$(document).ready(function(){
-
-	var stage = new Kinetic.Stage({
-		container: 'container',
-		width: 600,
-		height: 450
-	});
-
-	var layer = new Kinetic.Layer({
-		width: stage.width(),
-		height: stage.height()
-	});
-	var balllayer = new Kinetic.Layer({
-		width: stage.width(),
-		height: stage.height()
-	});
-
-	drawBackground(layer, board);
-	var circs = drawBalls(balllayer, balls, board, "#FF0000");
-	//console.log(circs);
-	drawRect(layer, goal, board, "#00FF00");
-	drawObstacles(layer,obstacles,board,"#882200");
-	
-	$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
-);
-
-	$('#reset').click(function(e){
-  		e.preventDefault();
-  		reset(balllayer, balls, originalballs);
-  	});
-
-	//alert(JSON.stringify(json, null, 4));
-  	$('#draw').click(function(e){
-  		e.preventDefault();
-  		var anim;
-	    	var dx = new Function('x','y', 'return '+document.getElementById("dx").value+';');
-	      	var dy = new Function('x','y', 'return '+document.getElementById("dy").value+';');
-	      	var equation = {'dx': dx, 'dy': dy};
-
-	    	var anim = new Kinetic.Animation(
-	    		function(frame) {
-	    			var bz = balllayer.getChildren();
-	    			var done = bz.length;
-	    			balllayer.draw();
-					for (var i = 0; i < balls.length; i++)
-					{
-						balls[i].valid = true;
-						var newX = balls[i].x + 0.05*dx(balls[i].x,balls[i].y);
-						var newY = balls[i].y + 0.05*dy(balls[i].x,balls[i].y);
-						for (var o = 0; o < obstacles.length; o++){
-							if (inRect({x:newX,y:newY},obstacles[o])){
-								console.log("hit obstacle");
-								balls[i].valid = false;
-								score-=10;
-								$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
-);
-							}
-						}
-
-							if (inRect({x:newX,y:newY},goal)){
-								console.log("goal!");
-								balls[i].valid = false;
-								score+=10;
-								$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
-);
-							}
-
-						if (inRect({x:newX,y:newY},board) && balls[i].valid){
-							balls[i].x = newX;
-							balls[i].y = newY;
-							bz[i].x((balls[i].x-board.x)/board.width*balllayer.width());
-							bz[i].y(balllayer.height()*(1-((balls[i].y-board.y)/board.height)));
-						}else{
-							done--;
-							//score-=1;
-							$("div.score").replaceWith("<div align = 'center' class = 'score'>SCORE: "+score+"</div>"
-);
-							console.log("done drawing");
-						}
-		    		}
-		    		if (done==0) {
-		    			drawing = false;
-		    			this.stop();
-		    		}
-		  		}
-		  	, balllayer);
-
-  		if (!drawing){
-  			console.log("drawing");
-  			drawing = true;
-	        anim.start();
-	    }else{
-	    	console.log("stopping");
-	    	drawing = false;
-	    	anim.stop();
-	    }
-
-	});
-	// add the layers to the stage
-	stage.add(layer);
-	stage.add(balllayer);
-
-  });
+      require(["/js/game.js"], function(gameMod)
+      {
+      challenge.dx = new Function('x', 'y', 
+      'return ' + document.getElementById("dx").value + ';');
+      challenge.dy = new Function('x', 'y',
+      'return ' + document.getElementById("dy").value + ';');
+      
+      gameMod.init(challenge);		  
+      require(["/js/render.js"], function(renderMod){
+      renderMod.init(gameMod,'container');
+      });
+      });
+	  
 
 
-	
-
-</script>
-</body>
+    </script>
+  </body>
 
 </html>
