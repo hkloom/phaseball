@@ -1,2 +1,0 @@
-mw.loader.implement("ext.wikiEditor.toolbar.hideSig",function(){$(document).ready(function(){if(!$.wikiEditor||!$.wikiEditor.isSupported($.wikiEditor.modules.toolbar)){return;}if($('body').hasClass('ns-0')){$('#wpTextbox1').wikiEditor('removeFromToolbar',{'section':'main','group':'insert','tool':'signature'});}});;},{},{});
-/* cache key: seriousjs:resourceloader:filter:minify-js:7:c9adb0390f14f12139c0aa61396cf23f */
