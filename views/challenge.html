@@ -28,6 +28,15 @@
       </div>
     </div>
     <script type="text/javascript">
+      function sin(x){  return Math.sin(x); }
+      function cos(x){  return Math.cos(x); }
+      function tan(x){  return Math.tan(x); }
+      function exp(x){  return Math.exp(x); }
+      function sqrt(x){ return Math.sqrt(x); }
+      function sinh(x){ return (exp(x)-exp(-x))/2; }
+      function cosh(x){ return (exp(x)+exp(-x))/2; }
+      
+
       
       var challenge = <%- JSON.stringify(game) -%>;
       
