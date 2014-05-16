@@ -1,6 +1,11 @@
 define([], function(){
 
-
+    function inRect(ball,rect){
+	return (ball.x >= rect.x && 
+		ball.x <= rect.x + rect.width &&
+		ball.y >= rect.y && 
+		ball.y <= rect.y + rect.height);
+    }
 
 
     function initGame(challenge)

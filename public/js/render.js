@@ -11,6 +11,13 @@ define([], function(){
 
       =================================================
     */
+    function inRect(ball,rect){
+	return (ball.x >= rect.x && 
+		ball.x <= rect.x + rect.width &&
+		ball.y >= rect.y && 
+		ball.y <= rect.y + rect.height);
+    }
+    
 
     function init(game,containerName)
     {
@@ -21,12 +28,6 @@ define([], function(){
 		height: 450
 	});
 	
-	function inRect(ball,rect){
-	    return (ball.x >= rect.x && 
-		    ball.x <= rect.x + rect.width &&
-		    ball.y >= rect.y && 
-		    ball.y <= rect.y + rect.height);
-	}
 	
 	function drawLine(layer,line,color){
 	    var line = new Kinetic.Line({
@@ -55,7 +56,6 @@ define([], function(){
 	    for (var i=0; i<balls.length;i++){
 		drawBall(layer,balls[i],board,color);
 	    }
-
 	}
 
 	function drawRect(layer,goal,board,color){
@@ -145,8 +145,9 @@ define([], function(){
     }
     
     function start(game,scoreFunc){
+	if(this.running == true) return;
 	var balllayer = this.balllayer;
-
+	this.running = true;
 	function animate(frame)
 	{
 	    var boardInstance = game.update(0.05);
@@ -175,12 +176,14 @@ define([], function(){
 	this.anim.start();
     }
     function stop(){
+	this.running = false;
 	this.anim.stop();
     }
     return {
 	'init': init,
 	'start': start,
-	'stop' : stop
+	'stop' : stop,
+        'running' : false
     };
 
 });
