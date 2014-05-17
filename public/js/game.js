@@ -1,5 +1,5 @@
-define([], function(){
-
+define(['mathjs'], function(mathjs){
+    var math = mathjs();
     function inRect(ball,rect){
 	return (ball.x >= rect.x && 
 		ball.x <= rect.x + rect.width &&
@@ -30,11 +30,14 @@ define([], function(){
 	    if(this.gameballs[i].valid){
 		var newX;
 		var newY;
-		newX = this.gameballs[i].x + dt*
-		    this.dx(this.gameballs[i].x,this.gameballs[i].y);
-		newY = this.gameballs[i].y + dt*
-		    this.dy(this.gameballs[i].x,this.gameballs[i].y);
-		
+		var scope = {
+		    x : this.gameballs[i].x,
+		    y : this.gameballs[i].y
+		    };
+		newX = this.gameballs[i].x + dt* math.eval(this.dx, scope);
+
+		newY = this.gameballs[i].y + dt* math.eval(this.dy, scope);
+		   		
 		for (var o = 0; o < this.challenge.obstacles.length; o++){
 		    if (inRect({x:newX,y:newY},this.challenge.obstacles[o])){
 				this.gameballs[i].points = -1;
