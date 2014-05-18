@@ -28,6 +28,11 @@
       </div>
     </div>
     <script type="text/javascript">
+      require.config({
+        paths: {
+          mathjs: '/js/math.min',
+        }
+     });
       function sin(x){  return Math.sin(x); }
       function cos(x){  return Math.cos(x); }
       function tan(x){  return Math.tan(x); }
@@ -61,16 +66,9 @@
           });
           $('#draw').click(function(e){
             e.preventDefault();
-            try{
-            gameMod.dx = new Function('x', 'y', 
-             'return ' + document.getElementById("dx").value + ';');
-            gameMod.dy = new Function('x', 'y',
-             'return ' + document.getElementById("dy").value + ';');
+            gameMod.dx = document.getElementById("dx").value;
+            gameMod.dy = document.getElementById("dy").value;
             renderMod.start(gameMod,scoreFunc);
-        	}
-        	catch (error){
-        		console.log(error);
-        	}
           });
         });
       });
