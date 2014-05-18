@@ -61,11 +61,16 @@
           });
           $('#draw').click(function(e){
             e.preventDefault();
+            try{
             gameMod.dx = new Function('x', 'y', 
              'return ' + document.getElementById("dx").value + ';');
             gameMod.dy = new Function('x', 'y',
              'return ' + document.getElementById("dy").value + ';');
             renderMod.start(gameMod,scoreFunc);
+        	}
+        	catch (error){
+        		console.log(error);
+        	}
           });
         });
       });
