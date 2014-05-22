@@ -48,6 +48,10 @@ app.get('/challenge/:num', function(req, res) {
 	});
 });
 
+app.get('/info', function(req, res) {
+	res.render('info.html', {});
+});
+
 var port = Number(process.env.PORT || 5000);
 app.listen(port, function() {
 	console.log("Listening on " + port);
