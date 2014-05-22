@@ -1,0 +1,30 @@
+The relationship between differential equations and their vector fields:
+
+From Wikipedia:
+
+	a vector field is an assignment of a vector to each point in a subset of Euclidean space. A vector field in the plane, for instance, can be visualized as a collection of arrows with a given magnitude and a direction, each attached to a point in the plane.
+
+attempted translation to basic english:
+
+	every point in the plane has a location. let's call this location (x,y).
+
+	the differential equation tells us where this point wants to move to:
+
+		if dx = 1, it means the point wants to move towards the right at a speed of 1.
+		if dx = -2, it means the point wants to move towards the left at a speed of 2.
+		if dy = 3, it means the point wants to move up at a speed of 3.
+		if dy = -4, it means the point wants to move down at a speed of 4.
+
+		if dx = 1 and dy = 1, it means the point wants to move to the right at a speed of 1 and up at a speed of one, so overall it will want to move up and right at a speed of sqrt(1^2 + 1^2) = sqrt(2).
+
+
+	if both the dx and dy parts of the equation are just numbers, then the vector field is called a CONSTANT vector field.
+
+	if we have a contant vector field with components
+	
+		dx = 3
+		dy = 4
+	
+	and we drop a ball at location (0,0), it will want to move to the right by 3 units and up by 4 units, so it will move up and to the right at an angle of 37 degrees and a speed of 5 (it's a 3,4,5 triangle)
+
+	In fact, if we drop a ball anywhere in the field it will want to move in the exact same way because this is a constant vector field, and constant vector fields affect everything in the field equally regardless of its position in the field.
