@@ -33,48 +33,40 @@
           mathjs: '/js/math.min',
         }
      });
-      function sin(x){  return Math.sin(x); }
-      function cos(x){  return Math.cos(x); }
-      function tan(x){  return Math.tan(x); }
-      function exp(x){  return Math.exp(x); }
-      function sqrt(x){ return Math.sqrt(x); }
-      function sinh(x){ return (exp(x)-exp(-x))/2; }
-      function cosh(x){ return (exp(x)+exp(-x))/2; }
-      
-
       
       var challenge = <%- JSON.stringify(game) -%>;
       
       function scoreFunc(score)
       {
         $("div.score").html("Score = "+score);
-        //console.log(score);
       }
 
       require(["/js/game.js"], function(gameMod)
       {
-        
-      
         gameMod.init(challenge);		  
-        require(["/js/render.js"], function(renderMod){
+        require(["/js/render.js"], function(renderMod)
+        {
           renderMod.init(gameMod,'container');
-          $('#reset').click(function(e){
+
+          $('#reset').click(function(e)
+          {
             e.preventDefault();
             renderMod.stop();
             gameMod.init(challenge);
             renderMod.init(gameMod,'container');
           });
-          $('#draw').click(function(e){
+
+          $('#draw').click(function(e)
+          {
             e.preventDefault();
             gameMod.dx = document.getElementById("dx").value;
             gameMod.dy = document.getElementById("dy").value;
             renderMod.start(gameMod,scoreFunc);
           });
+
         });
       });
 	  
-
-
     </script>
   </body>
 </html>

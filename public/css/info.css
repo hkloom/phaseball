@@ -1,0 +1,33 @@
+	* {
+	  margin: 0;
+	  font-family: Georgia;
+	}
+	html, body {
+	  height: 100%;
+	  background: #D0D7DB;
+	  text-align: left;
+	}
+	h1{
+		font-family: Georgia;
+		text-align: center;
+	}
+	textarea{
+		width: 500px;
+		height: 250px;
+		font-size: 14;
+	}
+	.content:after {
+	  content: "";
+	  display: block;
+	}
+	.footer, .content:after {
+	  /* .push must be the same height as footer */
+	  height: 50px; 
+	}
+	.footer {
+	  text-align: center;
+	  background: #3A60A6;
+	  color: #FFFFFF;
+	  font-size: 15;
+	}
+	canvas { border: 1px solid black; }
