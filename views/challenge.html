@@ -31,9 +31,10 @@
       require.config({
         paths: {
           mathjs: '/js/math.min',
+          crypto: '/js/crypto-min'
         }
      });
-      
+           
       var challenge = <%- JSON.stringify(game) -%>;
       
       function scoreFunc(score)
@@ -59,8 +60,9 @@
           $('#draw').click(function(e)
           {
             e.preventDefault();
-            gameMod.dx = document.getElementById("dx").value;
-            gameMod.dy = document.getElementById("dy").value;
+            var dx = document.getElementById("dx").value;
+            var dy = document.getElementById("dy").value;
+            gameMod.compileFuncs(dx,dy);
             renderMod.start(gameMod,scoreFunc);
           });
 

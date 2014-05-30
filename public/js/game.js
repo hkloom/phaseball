@@ -22,6 +22,24 @@ define(['mathjs'], function(mathjs){
 		    this.gameballs[i].points = 0;
 		}
     }
+   
+    function compileFuncs(dx, dy){
+      this.dxcode = math.compile(dx);
+      this.dycode = math.compile(dy);
+
+    }
+
+    function nextP(xp,yp,dt)
+    {
+      var scope = {
+                            x : xp,
+                            y : yp
+              };
+      return {
+          x: xp + dt * this.dxcode.eval(scope),
+          y: yp + dt * this.dycode.eval(scope)
+      };
+    }
 
     function update(dt)
     {	
@@ -35,8 +53,8 @@ define(['mathjs'], function(mathjs){
 			    y : this.gameballs[i].y
 			    };
 	        try{
-			  newX = this.gameballs[i].x + dt* math.eval(this.dx, scope);
-		 	  newY = this.gameballs[i].y + dt* math.eval(this.dy, scope);
+			  newX = this.gameballs[i].x + dt* this.dxcode.eval(scope);
+		 	  newY = this.gameballs[i].y + dt* this.dycode.eval(scope);
 			}
 	        catch(err){
 	          alert(err);
@@ -78,5 +96,7 @@ define(['mathjs'], function(mathjs){
 	    
 	    return {"init" : initGame,
 		    "update": update,
+                    "nextP" : nextP,
+                    "compileFuncs" : compileFuncs,
 		   "gameballs": []};
 });
