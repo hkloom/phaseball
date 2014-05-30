@@ -60,6 +60,7 @@
           $('#draw').click(function(e)
           {
             e.preventDefault();
+            if(renderMod.running) return;
             var dx = document.getElementById("dx").value;
             var dy = document.getElementById("dy").value;
             gameMod.compileFuncs(dx,dy);
