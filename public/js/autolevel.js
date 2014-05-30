@@ -1,5 +1,38 @@
 define([], function(){
 	
+	function makeBoard(goalX, goalY, goalWidth, goalHeight, dx, dy, numBalls, numObstacles) {
+	    //initiate random stream
+	    var randomStream = new RandomStream(0); //arbitrary seed for now
+	    
+	    //position balls around edges of goal
+	    //just white noise for now, can experiment with Perlin noise in future
+	    //really should make a ball object
+	    var balls = [];
+	    for (i=0; i<numBalls; i++) {
+		var position = randomStream.nextIntRange(2*goalWidth + 2*goalHeight);
+		if (position < goalWidth) {
+		    balls.push({x: goalX + position, y: goalY});
+		} else if (position < goalWidth+goalHeight) {
+		    balls.push({x: goalX + goalWidth, y: goalY + position - goalWidth});
+		} else if (position < 2*goalWidth+goalHeight) {
+		    balls.push({x: goalX + goalWidth - (position - (goalWidth + goalHeight)), 
+				y: goalY + goalHeight});
+		} else {
+		    balls.push({x: goalX, y: goalY + goalHeight - (position - (2*goalWidth + goalHeight))});
+		}
+	    }
+	    
+	    //trace balls out
+	    //trace balls back, and record paths
+	    //(check that each ball makes it back and replace if not)
+	    //place obstacles
+	    var obstacles = [];
+	    //place obstacle, check if it blocks a path, if so remove it
+	    
+	    //put ball and obstacle arrays in a board object
+	    
+	}
+	
 	function init(seed) {
 	    
 	    /*
@@ -99,7 +132,8 @@ define([], function(){
 	}
 	
 	return {
-	    'init': init
+	    'init': init, 
+	    'makeBoard': makeBoard
 	};
 	
 	/*	
