@@ -63,9 +63,15 @@
             if(renderMod.running) return;
             var dx = document.getElementById("dx").value;
             var dy = document.getElementById("dy").value;
+            try{
             gameMod.compileFuncs(dx,dy);
             renderMod.start(gameMod,scoreFunc);
-          });
+            }
+            catch(err)
+            {/* we need this for the math parse error messages*/
+             alert(err);
+            }
+           });
 
         });
       });

@@ -52,14 +52,8 @@ define(['mathjs'], function(mathjs){
 			    x : this.gameballs[i].x,
 			    y : this.gameballs[i].y
 			    };
-	        try{
 			  newX = this.gameballs[i].x + dt* this.dxcode.eval(scope);
 		 	  newY = this.gameballs[i].y + dt* this.dycode.eval(scope);
-			}
-	        catch(err){
-	          alert(err);
-			  return null;
-            }		
 			for (var o = 0; o < this.challenge.obstacles.length; o++){
 			    if (inRect({x:newX,y:newY},this.challenge.obstacles[o])){
 					this.gameballs[i].points = -1;
