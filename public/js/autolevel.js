@@ -1,5 +1,13 @@
 define([], function(){
 	
+	function forwardTrace(ball, dx, dy) {
+	    
+	}
+	
+	function backwardTrace(ball, dx, dy) {
+	    
+	}
+	
 	function makeBoard(goalX, goalY, goalWidth, goalHeight, dx, dy, numBalls, numObstacles) {
 	    //initiate random stream
 	    var randomStream = new RandomStream(0); //arbitrary seed for now
@@ -23,6 +31,8 @@ define([], function(){
 	    }
 	    
 	    //trace balls out
+	    
+	    
 	    //trace balls back, and record paths
 	    //(check that each ball makes it back and replace if not)
 	    //place obstacles
@@ -30,7 +40,12 @@ define([], function(){
 	    //place obstacle, check if it blocks a path, if so remove it
 	    
 	    //put ball and obstacle arrays in a board object
-	    
+	    //wasn't sure what to put for the board so I copied it from web.js
+	    var game = {balls: balls, 
+			board: {x:2, y:1, width:16, height:14}, 
+			goal: {goalX, goalY, goalWidth, goalHeight}, 
+			obstacles: obstacles};
+	    return game;
 	}
 	
 	function init(seed) {
