@@ -11,6 +11,41 @@ define([], function(){
 
       =================================================
     */
+
+     var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
+          
+      function getRandomColor() {
+          return colors[Math.round(Math.random() * 5)];
+      }
+    function drawPrettyBackground(layer, game){
+     var board = game.challenge.board;
+     //return;
+     for(var k =0; k <=1000; k++){
+       var xp = Math.random() * board.width;
+       var yp = Math.random() * board.height;
+       var points = [];
+       for(var i =0; i <= 40; i++){
+	 var xr = (xp - board.x)/board.width*layer.width();
+	 var yr = (1-(yp - board.y)/board.height)*layer.height();
+         points.push(xr);
+	 points.push(yr);
+           var p = game.nextP(xp, yp,0.05);
+           xp = p.x;
+	   yp = p.y;
+         }
+
+         var line = new Kinetic.Line({
+                  points: points,
+                  stroke: getRandomColor(),
+                  strokeWidth: 1,
+                  lineCap: 'round',
+                  lineJoin: 'round'
+              });
+         layer.add(line);
+       }
+
+     }  
+
     function inRect(ball,rect){
 	return (ball.x >= rect.x && 
 		ball.x <= rect.x + rect.width &&
@@ -18,17 +53,17 @@ define([], function(){
 		ball.y <= rect.y + rect.height);
     }
     
-
+    var stage;
     function init(game,containerName)
     {
 	var board = game.board;
-	var stage = new Kinetic.Stage({
+	stage = new Kinetic.Stage({
 		container: containerName,
 		width: 600,
 		height: 450
 	});
 	
-	
+     	
 	function drawLine(layer,line,color){
 	    var line = new Kinetic.Line({
 		points: [line.A.x, line.A.y, line.B.x, line.B.y],
@@ -123,29 +158,51 @@ define([], function(){
 	var layer = new Kinetic.Layer({
 	    width: stage.width(),
 	    height: stage.height()
+            
 	});
 	
 	var balllayer = new Kinetic.Layer({
 	    width: stage.width(),
 	    height: stage.height()
 	});
+
+        var obstaclesLayer =  new Kinetic.Layer({
+            width: stage.width(),
+            height: stage.height()
+        });
+        
 	
 //	console.log(game);
 	drawBackground(layer, game.challenge.board);
 	drawBalls(balllayer, game.gameballs, game.challenge.board, "#FF0000");
 	
-	drawRect(layer, game.challenge.goal, 
+	drawRect(obstaclesLayer, game.challenge.goal, 
 		 game.challenge.board, "#00FF00");
-	drawObstacles(layer, game.challenge.obstacles,
+	drawObstacles(obstaclesLayer, game.challenge.obstacles,
 		      game.challenge.board, "#882200");
 	stage.add(layer);
+	stage.add(obstaclesLayer);
 	stage.add(balllayer);
+
+        layer.setZIndex(0);
+        balllayer.setZIndex(5);
+        obstaclesLayer.setZIndex(3);
 	stage.draw();
 	this.balllayer = balllayer;
     }
     
     function start(game,scoreFunc){
 	if(this.running == true) return;
+        
+        var background = new Kinetic.Layer({
+	    width: stage.width(),
+            height: stage.height()
+	});
+
+        drawPrettyBackground(background, game);
+	stage.add(background);
+        background.setZIndex(1);
+
 	var balllayer = this.balllayer;
 	this.running = true;
 	function animate(frame)
@@ -183,7 +240,8 @@ define([], function(){
 	'init': init,
 	'start': start,
 	'stop' : stop,
-        'running' : false
+        'running' : false,
+        'stage' : stage
     };
 
 });

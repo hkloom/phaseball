@@ -28,12 +28,26 @@ sudo make install
 ```
 
 <p> Ubuntu install:</p>
-<code>
+
+```
   sudo apt-get install nodejs
   sudo apt-get install npm
   sudo npm install -g foreman
   sudo apt-get install nodejs-legacy
-</code>
+```
 
-http://nodejs.org/download/
+<p> Other Platforms:</p>
+You can download Node JS from http://nodejs.org/download/.
+You will also need node foreman which can be installed with npm.
 
+Running
+------------------
+To run the server run first cd to the phaseball directory and run
+```
+nf start
+```
+
+If you don't have Node foreman installed you can run it with
+```
+node web.js
+```
