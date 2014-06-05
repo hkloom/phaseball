@@ -33,8 +33,8 @@ attempted translation to basic english:
 
 	if we have a contant vector field with components
 	
-		dx = 3
-		dy = 4
+		dx/dt = 3
+		dy/dt = 4
 	
 	and we drop a ball at location (0,0), it will want to move to the right by 3 units and up by 4 units, so it will move up and to the right at an angle of 37 degrees and a speed of 5 (it's a 3,4,5 triangle)
 

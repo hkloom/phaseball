@@ -48,6 +48,26 @@ app.get('/challenge/:num', function(req, res) {
 	});
 });
 
+app.get('/create', function(req, res) {
+	res.render('levelcreator.html', {
+		title: "Create new level",
+		game: 	{ 
+				balls: [
+					{x:4, y:7},
+					{x:5, y:6},
+					{x:3, y:4},
+					{x:4.5, y:5},
+					],
+				board: {x:2, y:1, width:16, height:14},
+				goal: {x:8, y:5, width:0.5,height:1.5},
+				obstacles: 	[
+							{x:7, y:4, width:0.2,height:2},
+							{x:5.5, y:6, width:0.8,height:0.3}
+							]
+				}
+	});
+});
+
 app.get('/info', function(req, res) {
 	res.render('info.html', {});
 });

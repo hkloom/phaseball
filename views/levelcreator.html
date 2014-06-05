@@ -22,8 +22,11 @@
 	  <input id = "dy" type = "text" class = "equation" value = "0">
 	  <br>
 	  <br>
-	  <input type="submit" value= "Reset" id ="reset">
-	  <input type="submit" value= "Draw" id ="draw">
+	  <input type="submit" value= "Add Ball" id ="ball">
+	  <input type="submit" value= "Add Obstacle" id ="obstacle">
+      <input type="submit" value= "Export" id ="export">
+      <input type="submit" value= "Reset" id ="reset">
+      <input type="submit" value= "Draw" id ="draw">
 	</form>
       </div>
     </div>
@@ -41,10 +44,10 @@
         $("div.score").html("Score = "+score);
       }
 
-      require(["/js/game.js"], function(gameMod)
+      require(["/js/modgame.js"], function(gameMod)
       {
         gameMod.init(challenge);		  
-        require(["/js/render.js"], function(renderMod)
+        require(["/js/render2.js"], function(renderMod)
         {
           renderMod.init(gameMod,'container');
 
