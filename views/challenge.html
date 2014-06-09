@@ -25,6 +25,12 @@
 	  <input type="submit" value= "Reset" id ="reset">
 	  <input type="submit" value= "Draw" id ="draw">
 	</form>
+	<form action="">
+	  <input type="radio" name='back' id = 'setBack0'>No Background<br>
+	  <input type="radio" name='back' id = 'setBack1'>Color Background<br>
+	  <input type="radio" name='back' id = 'setBack2'>Vector Background<br>
+
+	</form>
       </div>
     </div>
     <script type="text/javascript">
@@ -55,6 +61,19 @@
             renderMod.stop();
             gameMod.init(challenge);
             renderMod.init(gameMod,'container');
+          });
+
+          $('#setBack0').click(function(e)
+          {
+            renderMod.setBackground(0);
+          });
+          $('#setBack1').click(function(e)
+          {
+            renderMod.setBackground(1);
+          });
+          $('#setBack2').click(function(e)
+          {
+            renderMod.setBackground(2);
           });
 
           $('#draw').click(function(e)

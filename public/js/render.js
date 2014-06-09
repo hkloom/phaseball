@@ -12,39 +12,74 @@ define([], function(){
       =================================================
     */
 
-     var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
-          
-      function getRandomColor() {
-          return colors[Math.round(Math.random() * 5)];
-      }
+    var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
+    
+    function getRandomColor() {
+        return colors[Math.round(Math.random() * 5)];
+    }
+
+    function canvas_arrow(fromx, fromy, tox, toy){
+	var headlen = 5;   // how long you want the head of the arrow to be, you could calculate this as a fraction of the distance between the points as well.
+	var angle = Math.atan2(toy-fromy,tox-fromx);
+	
+	return new Kinetic.Line({
+            points: [fromx, fromy, tox, toy, tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6),tox, toy, tox-headlen*Math.cos(angle+Math.PI/6),toy-headlen*Math.sin(angle+Math.PI/6)],
+            stroke: "red"
+	});
+    }
+    
+    function drawVectorBackground(layer, game){
+	var board = game.challenge.board;
+	//return;
+	for(var k =0; k <=20; k++){
+	    for(var j =0; j <=20; j++){
+		var xp = j * board.width/20;
+		var yp = k * board.height/20;
+		var points = [];
+		var xr = (xp - board.x)/board.width*layer.width();
+		var yr = (1-(yp - board.y)/board.height)*layer.height();
+	        var p = game.nextP(xp, yp,0.05);
+		var xrnew = (p.x - board.x)/board.width*layer.width();
+		var yrnew = (1-(p.y - board.y)/board.height)*layer.height();
+		xrnew = (xrnew-xr)*6 + xr;
+	        yrnew = (yrnew -yr) *6 + yr;
+
+		var line = canvas_arrow(xr,yr,xrnew,yrnew)
+		
+		layer.add(line);
+	    }
+	}
+
+    }  
+
     function drawPrettyBackground(layer, game){
-     var board = game.challenge.board;
-     //return;
-     for(var k =0; k <=1000; k++){
-       var xp = Math.random() * board.width;
-       var yp = Math.random() * board.height;
-       var points = [];
-       for(var i =0; i <= 40; i++){
-	 var xr = (xp - board.x)/board.width*layer.width();
-	 var yr = (1-(yp - board.y)/board.height)*layer.height();
-         points.push(xr);
-	 points.push(yr);
-           var p = game.nextP(xp, yp,0.05);
-           xp = p.x;
-	   yp = p.y;
-         }
+	var board = game.challenge.board;
+	//return;
+	for(var k =0; k <=1000; k++){
+	    var xp = Math.random() * board.width;
+	    var yp = Math.random() * board.height;
+	    var points = [];
+	    for(var i =0; i <= 40; i++){
+		var xr = (xp - board.x)/board.width*layer.width();
+		var yr = (1-(yp - board.y)/board.height)*layer.height();
+		points.push(xr);
+		points.push(yr);
+		var p = game.nextP(xp, yp,0.05);
+		xp = p.x;
+		yp = p.y;
+            }
 
-         var line = new Kinetic.Line({
-                  points: points,
-                  stroke: getRandomColor(),
-                  strokeWidth: 1,
-                  lineCap: 'round',
-                  lineJoin: 'round'
-              });
-         layer.add(line);
-       }
+            var line = new Kinetic.Line({
+                points: points,
+                stroke: getRandomColor(),
+                strokeWidth: 1,
+                lineCap: 'round',
+                lineJoin: 'round'
+            });
+            layer.add(line);
+	}
 
-     }  
+    }  
 
     function inRect(ball,rect){
 	return (ball.x >= rect.x && 
@@ -58,9 +93,9 @@ define([], function(){
     {
 	var board = game.board;
 	stage = new Kinetic.Stage({
-		container: containerName,
-		width: 600,
-		height: 450
+	    container: containerName,
+	    width: 600,
+	    height: 450
 	});
 	
      	
@@ -172,7 +207,7 @@ define([], function(){
         });
         
 	
-//	console.log(game);
+	//	console.log(game);
 	drawBackground(layer, game.challenge.board);
 	drawBalls(balllayer, game.gameballs, game.challenge.board, "#FF0000");
 	
@@ -190,18 +225,38 @@ define([], function(){
 	stage.draw();
 	this.balllayer = balllayer;
     }
-    
+
+
+
     function start(game,scoreFunc){
 	if(this.running == true) return;
         
-        var background = new Kinetic.Layer({
+
+
+	this.background = new Kinetic.Layer({
 	    width: stage.width(),
             height: stage.height()
 	});
 
-        drawPrettyBackground(background, game);
-	stage.add(background);
-        background.setZIndex(1);
+
+	this.prettyBackground = new Kinetic.Layer({
+	    width: stage.width(),
+            height: stage.height()
+	});
+
+        drawVectorBackground(this.prettyBackground, game);	
+        drawPrettyBackground(this.background, game);
+
+
+
+	    
+	stage.add(this.background);
+        this.background.setZIndex(1);
+
+	stage.add(this.prettyBackground);
+        this.prettyBackground.setZIndex(1);
+
+	this.setBackground(this.backgroundState);
 
 	var balllayer = this.balllayer;
 	this.running = true;
@@ -236,12 +291,33 @@ define([], function(){
 	this.running = false;
 	this.anim.stop();
     }
+
+    function setBackground(state){
+	this.backgroundState = state;
+	switch(state){
+	case 0:
+	    this.background.visible(false);
+	    this.prettyBackground.visible(false);
+	    break;
+	case 1:
+	    this.background.visible(true);
+	    this.prettyBackground.visible(false);
+	    break;
+	case 2:
+	    this.background.visible(false);
+	    this.prettyBackground.visible(true);
+	    break;
+	}
+    }
+
     return {
 	'init': init,
 	'start': start,
 	'stop' : stop,
         'running' : false,
-        'stage' : stage
+        'stage' : stage,
+	'setBackground' : setBackground,
+	'backgroundState' : 0,
     };
 
 });
