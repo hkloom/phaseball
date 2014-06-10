@@ -1,40 +1,92 @@
 define([], function(){
+	//TODO: implement forwardStep and backStep, 
+	//record the ball paths, 
+	//place the obstacles
 	
-	function forwardTrace(ball, dx, dy) {
-	    
+	function forwardStep(coord, dx, dy) {
+	    //need to figure out how dx and dy are represented
 	}
 	
-	function backwardTrace(ball, dx, dy) {
-	    
+	//traces a ball outward from the goal so that it is in position for the game
+	function forwardTrace(ball, dx, dy, numSteps) {
+	    if (numSteps==0)
+		return ball;
+	    return forwardTrace(forwardStep(ball, dx, dy), dx, dy, numSteps - 1);
 	}
 	
-	function makeBoard(goalX, goalY, goalWidth, goalHeight, dx, dy, numBalls, numObstacles) {
+	//checks whether a balls intersects the goal
+	function intersectsGoal(ball, goal) {
+	    if (ball.x>goal.x 
+		&& ball.x<goal.x+goal.width 
+		&& ball.y>goal.y 
+		&& ball.y<goal.y+goal.height) 
+		return true;
+	    return false;
+	}
+	
+	//Euler for now
+	function backStep(coord, dx, dy) {
+	    //need to figure out how dx and dy are represented
+	}
+	
+	//after balls have been traced outward from goal, 
+	//trace them back to the goal to make sure significant 
+	//error has not been introduced
+	function backwardTrace(ball, dx, dy, maxNumSteps) {
+	    if (intersectsGoal(ball)) 
+		return true;
+	    if (maxNumSteps==0) 
+		return false;
+	    //apply step
+	    return backwardsTrace(backStep(ball, dx, dy), dx, dy, maxNumSteps - 1);
+	}
+	
+	//places a ball on the edge of the goal so that we can trace it outward
+	function placeRandomBallOnGoal(randomStream, goal) {
+	    var ball;
+	    var position = randomStream.nextIntRange(2*goal.width + 2*goal.height);
+	    if (position < goal.width) {
+		ball = {x: goal.x + position, y: goal.y};
+	    } else if (position < goal.width+goal.height) {
+		ball = {x: goal.x + goal.width, y: goal.y + position - goal.width};
+	    } else if (position < 2*goal.width+goal.height) {
+		ball = {x: goal.x + goal.width - (position - (goal.width + goal.height)),
+			    y: goal.y + goal.height};
+	    } else {
+		ball = {x: goal.x, y: goal.y + goal.height - (position - (2*goal.width + goal.height))};
+	    }
+	    return ball;
+	}
+	
+	function makeBoard(goal, dx, dy, numBalls, numObstacles) {
 	    //initiate random stream
 	    var randomStream = new RandomStream(0); //arbitrary seed for now
 	    
 	    //position balls around edges of goal
 	    //just white noise for now, can experiment with Perlin noise in future
-	    //really should make a ball object
 	    var balls = [];
 	    for (i=0; i<numBalls; i++) {
-		var position = randomStream.nextIntRange(2*goalWidth + 2*goalHeight);
-		if (position < goalWidth) {
-		    balls.push({x: goalX + position, y: goalY});
-		} else if (position < goalWidth+goalHeight) {
-		    balls.push({x: goalX + goalWidth, y: goalY + position - goalWidth});
-		} else if (position < 2*goalWidth+goalHeight) {
-		    balls.push({x: goalX + goalWidth - (position - (goalWidth + goalHeight)), 
-				y: goalY + goalHeight});
-		} else {
-		    balls.push({x: goalX, y: goalY + goalHeight - (position - (2*goalWidth + goalHeight))});
-		}
+		balls.push(placeRandomBallOnGoal(randomStream, goal));
 	    }
 	    
 	    //trace balls out
-	    
+	    var minSteps = 5;//not sure what the best numbers are
+	    var maxSteps = 50;//arbitrary values for now
+	    for (i=0; i<numBalls; i++) {
+		//trace balls out from goal
+		traceForward(balls[i], dx, dy, randomStream.nextIntRange(minSteps, maxSteps));
+		//make sure that they will trace back to the goal correctly
+		//and replace if they won't
+		while (!traceBack(balls[i], dx, dy, maxSteps)) {
+		    balls[i] = traceForward(placeRandomBallOnGoal(randomStream, goal), 
+					    dx, 
+					    dy, 
+					    randomStream.nextIntRange(minSteps, maxSteps));
+		}
+	    }
 	    
 	    //trace balls back, and record paths
-	    //(check that each ball makes it back and replace if not)
+	    
 	    //place obstacles
 	    var obstacles = [];
 	    //place obstacle, check if it blocks a path, if so remove it
